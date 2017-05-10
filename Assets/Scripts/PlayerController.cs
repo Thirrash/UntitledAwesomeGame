@@ -7,23 +7,28 @@ namespace AwesomeGame.PlayerMgmt
 {
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField] float turnSensitivity;
-        [SerializeField] float moveSensitivity;
+        [SerializeField]
+        float horizontalSensitivity = 0.0f;
 
-        void Start( )
-        {
-            GlobalEvent.MoveHorizontal += MoveHorizontal;
-            GlobalEvent.MoveVertical += MoveVertical;
+        [SerializeField]
+        float verticalSensitivity = 0.0f;
+
+        void Start( ) {
+            MovementTrigger.Instance.MoveHorizontal += MoveHorizontal;
+            MovementTrigger.Instance.MoveVertical += MoveVertical;
         }
 
-        void MoveHorizontal( float val )
-        {
-            transform.Rotate(new Vector3(0.0f, val * turnSensitivity, 0.0f));
+        void OnDestroy( ) {
+            MovementTrigger.Instance.MoveHorizontal -= MoveHorizontal;
+            MovementTrigger.Instance.MoveVertical -= MoveVertical;
         }
 
-        void MoveVertical( float val )
-        {
-            transform.Translate(new Vector3(val, 0.0f, val * moveSensitivity), Space.Self);
+        void MoveHorizontal( float val ) {
+            transform.Translate( new Vector3( val * horizontalSensitivity * Time.deltaTime, 0.0f, 0.0f ), Space.Self );
+        }
+
+        void MoveVertical( float val ) {
+            transform.Translate( new Vector3( 0.0f, 0.0f, val * verticalSensitivity * Time.deltaTime ), Space.Self );
         }
     }
 }
