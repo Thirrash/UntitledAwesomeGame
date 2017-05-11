@@ -116,9 +116,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 110524055}
-  - component: {fileID: 110524054}
   - component: {fileID: 110524056}
   - component: {fileID: 110524057}
+  - component: {fileID: 110524054}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -268,7 +268,7 @@ Light:
   serializedVersion: 8
   m_Type: 1
   m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1.5
+  m_Intensity: 1.14
   m_Range: 10
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -300,13 +300,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 502622064}
-  m_LocalRotation: {x: 0.422216, y: 0.039532606, z: -0.018434355, w: 0.9054452}
+  m_LocalRotation: {x: 0.9039226, y: 0.042173486, z: 0.011138162, w: 0.425466}
   m_LocalPosition: {x: 0, y: 4.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 50, y: 5, z: 0}
+  m_LocalEulerAnglesHint: {x: 50.196003, y: 174.979, z: 172.30501}
 --- !u!1 &576008362
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,7 +528,7 @@ MonoBehaviour:
   zoomSensitivity: 300
   minPointOfView: -45
   maxPointOfView: 45
-  offsetFromGround: 2.5
+  offsetFromGround: 1.5
 --- !u!1001 &1072388538
 Prefab:
   m_ObjectHideFlags: 0
@@ -1139,11 +1139,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4043987102262206, guid: 5e301bf13f6eff243b59692d6353cb0c, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.573
       objectReference: {fileID: 0}
     - target: {fileID: 4043987102262206, guid: 5e301bf13f6eff243b59692d6353cb0c, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.056
+      value: 0.11
       objectReference: {fileID: 0}
     - target: {fileID: 4043987102262206, guid: 5e301bf13f6eff243b59692d6353cb0c, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1169,16 +1169,31 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 54235574437658722, guid: 5e301bf13f6eff243b59692d6353cb0c,
+    - target: {fileID: 114114814652882072, guid: 5e301bf13f6eff243b59692d6353cb0c,
         type: 2}
-      propertyPath: m_Constraints
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 95727329494618006, guid: 5e301bf13f6eff243b59692d6353cb0c,
+      propertyPath: wheelObj
+      value: 
+      objectReference: {fileID: 1557441983}
+    - target: {fileID: 114734874676350346, guid: 5e301bf13f6eff243b59692d6353cb0c,
         type: 2}
-      propertyPath: m_Enabled
-      value: 1
+      propertyPath: TimeToMove
+      value: 0.3
       objectReference: {fileID: 0}
+    - target: {fileID: 137256361527444474, guid: 5e301bf13f6eff243b59692d6353cb0c,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0ed84b1ed00dd6e41b19428ea35a11e3, type: 2}
+    - target: {fileID: 137651310340883180, guid: 5e301bf13f6eff243b59692d6353cb0c,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 41fa7826b8cd4be428a737f99713b864, type: 2}
+    - target: {fileID: 23579856284787624, guid: 5e301bf13f6eff243b59692d6353cb0c,
+        type: 2}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 41fa7826b8cd4be428a737f99713b864, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e301bf13f6eff243b59692d6353cb0c, type: 2}
   m_IsPrefabParent: 0
@@ -1187,31 +1202,3 @@ GameObject:
   m_PrefabParentObject: {fileID: 1335671310687842, guid: 5e301bf13f6eff243b59692d6353cb0c,
     type: 2}
   m_PrefabInternal: {fileID: 1724877766}
---- !u!114 &1724877768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1724877767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb9a6aacf0accc54c8467a48f7242c6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1724877769
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1724877767}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a132cd3a314f1c439f27472bef2f308, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wheelObj: {fileID: 1557441983}
-  maxAttackRange: 2
-  attackTime: 5
-  timeBetweenAttacks: 1
-  timeToReachSlowMotion: 1
-  slowMotionTimeScale: 0.1
