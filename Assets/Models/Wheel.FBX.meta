@@ -1,0 +1,164 @@
+fileFormatVersion: 2
+guid: cfe0352dc92cec24d9f4910dae1bc13b
+timeCreated: 1494609845
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Center
+    100002: InnerBottom
+    100004: InnerLeft
+    100006: InnerLeftBottom
+    100008: InnerLeftTop
+    100010: InnerRight
+    100012: InnerRightBottom
+    100014: InnerRightTop
+    100016: InnerTop
+    100018: OuterBottom
+    100020: OuterLeft
+    100022: OuterLeftBottom
+    100024: OuterLeftTop
+    100026: OuterRight
+    100028: OuterRightBottom
+    100030: OuterRightTop
+    100032: OuterTop
+    100034: //RootNode
+    400000: Center
+    400002: InnerBottom
+    400004: InnerLeft
+    400006: InnerLeftBottom
+    400008: InnerLeftTop
+    400010: InnerRight
+    400012: InnerRightBottom
+    400014: InnerRightTop
+    400016: InnerTop
+    400018: OuterBottom
+    400020: OuterLeft
+    400022: OuterLeftBottom
+    400024: OuterLeftTop
+    400026: OuterRight
+    400028: OuterRightBottom
+    400030: OuterRightTop
+    400032: OuterTop
+    400034: //RootNode
+    2300000: Center
+    2300002: InnerBottom
+    2300004: InnerLeft
+    2300006: InnerLeftBottom
+    2300008: InnerLeftTop
+    2300010: InnerRight
+    2300012: InnerRightBottom
+    2300014: InnerRightTop
+    2300016: InnerTop
+    2300018: OuterBottom
+    2300020: OuterLeft
+    2300022: OuterLeftBottom
+    2300024: OuterLeftTop
+    2300026: OuterRight
+    2300028: OuterRightBottom
+    2300030: OuterRightTop
+    2300032: OuterTop
+    3300000: Center
+    3300002: InnerBottom
+    3300004: InnerLeft
+    3300006: InnerLeftBottom
+    3300008: InnerLeftTop
+    3300010: InnerRight
+    3300012: InnerRightBottom
+    3300014: InnerRightTop
+    3300016: InnerTop
+    3300018: OuterBottom
+    3300020: OuterLeft
+    3300022: OuterLeftBottom
+    3300024: OuterLeftTop
+    3300026: OuterRight
+    3300028: OuterRightBottom
+    3300030: OuterRightTop
+    3300032: OuterTop
+    4300000: Center
+    4300002: InnerLeft
+    4300004: InnerLeftTop
+    4300006: InnerTop
+    4300008: InnerRightTop
+    4300010: InnerRight
+    4300012: InnerRightBottom
+    4300014: InnerBottom
+    4300016: InnerLeftBottom
+    4300018: OuterLeft
+    4300020: OuterLeftTop
+    4300022: OuterTop
+    4300024: OuterRightTop
+    4300026: OuterRight
+    4300028: OuterRightBottom
+    4300030: OuterBottom
+    4300032: OuterLeftBottom
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

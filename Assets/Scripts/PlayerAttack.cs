@@ -6,15 +6,13 @@ using System.Text;
 using AwesomeGame.EventMgmt;
 using AwesomeGame.GuiMgmt;
 using AwesomeGame.UtilityMgmt;
+using AwesomeGame.WheelMgmt;
 using UnityEngine;
 
 namespace AwesomeGame.PlayerMgmt
 {
     public sealed class PlayerAttack : MonoBehaviour
     {
-        [SerializeField]
-        GameObject wheelObj = null;
-
         [SerializeField]
         float maxAttackRange = 2.0f;
 
@@ -31,9 +29,11 @@ namespace AwesomeGame.PlayerMgmt
         float slowMotionTimeScale = 0.1f;
 
         bool isAttacking = false;
+        Wheel wheel;
 
         void Start( ) {
             InputTrigger.Instance.MouseLeftButton += InitAttack;
+            wheel = Wheel.Instance;
         }
 
         void InitAttack( ) {
@@ -45,7 +45,7 @@ namespace AwesomeGame.PlayerMgmt
                 return;
 
             isAttacking = true;
-            wheelObj.SetActive( true );
+            wheel.ToggleActivation( true );
             CursorLock.Instance.UnlockCursor( );
             StartCoroutine( HandleSlowMotion( ) );
             StartCoroutine( HandleCooldown( ) );
@@ -68,7 +68,8 @@ namespace AwesomeGame.PlayerMgmt
 
         IEnumerator HandleCooldown( ) {
             yield return new WaitForSecondsRealtime( attackTime );
-            wheelObj.SetActive( false );
+            wheel.Finalize( false );
+            wheel.ToggleActivation( false );
             CursorLock.Instance.LockCursor( );
 
             yield return new WaitForSecondsRealtime( timeBetweenAttacks );
