@@ -49,7 +49,6 @@ namespace AwesomeGame.PlayerMgmt
             CursorLock.Instance.UnlockCursor( );
             StartCoroutine( HandleSlowMotion( ) );
             StartCoroutine( HandleCooldown( ) );
-            //attack logic here
         }
 
         IEnumerator HandleSlowMotion( ) {

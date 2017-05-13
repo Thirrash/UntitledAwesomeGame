@@ -7,6 +7,7 @@ namespace AwesomeGame.WheelMgmt
 {
     public enum WheelPosition
     {
+        Neutral,
         Center,
 
         InnerLeft,

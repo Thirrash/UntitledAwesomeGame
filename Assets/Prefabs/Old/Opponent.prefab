@@ -2740,10 +2740,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1df1dc0a637e04a42953c08f907e9d54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ShieldHit: {fileID: 8300000, guid: 78ccaaf11b547664dac28d72aff30d91, type: 3}
-  SlashAttack: {fileID: 8300000, guid: 65f2a8b24e9147c4d98518db3568436e, type: 3}
-  ThrustAttack: {fileID: 8300000, guid: 4b9801a80d2dfc842abc8e0a14612622, type: 3}
-  a4: {fileID: 0}
+  soundTypes: 
+  soundClips: []
 --- !u!137 &137262852926531984
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1
