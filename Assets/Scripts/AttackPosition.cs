@@ -10,11 +10,13 @@ namespace AwesomeGame.WheelMgmt
     {
         public WheelPosition WheelPos { get; private set; }
         public float DamageModifier { get; private set; }
+        Wheel wheel;
 
         void Start( ) {
+            wheel = (Wheel)Wheel.Instance;
             DamageModifier = 1.0f;
             WheelPos = (WheelPosition) Enum.Parse( typeof( WheelPosition ), gameObject.name );
-            Wheel.Instance.AddAttackPosition( WheelPos, this );
+            wheel.AddAttackPosition( WheelPos, this );
         }
     }
 }

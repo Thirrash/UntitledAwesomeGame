@@ -33,7 +33,7 @@ namespace AwesomeGame.PlayerMgmt
 
         void Start( ) {
             InputTrigger.Instance.MouseLeftButton += InitAttack;
-            wheel = Wheel.Instance;
+            wheel = (Wheel)Wheel.Instance;
         }
 
         void InitAttack( ) {

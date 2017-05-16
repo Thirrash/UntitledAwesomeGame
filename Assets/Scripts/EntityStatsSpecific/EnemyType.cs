@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using UnityEngine;
 
-namespace AwesomeGame.PlayerMgmt
+namespace AwesomeGame.EditorMgmt
 {
-    public class PlayerStatistics : MonoBehaviour
+    public enum EnemyType
     {
-
+        TestEnemy,
+        TestEnemy2
     }
 }

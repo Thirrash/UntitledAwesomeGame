@@ -5,16 +5,10 @@ using UnityEngine;
 
 namespace AwesomeGame.WheelMgmt
 {
-    public class Wheel : MonoBehaviour
+    public class Wheel : WheelBase
     {
-        public static Wheel Instance { get; private set; }
-        public bool IsBlocked { get; private set; }
-        public bool IsClicked { get; private set; }
         public IKControl IkControl;
         public MoveObject PlayerMove;
-
-        [SerializeField]
-        GameObject wheelObj;
 
         [SerializeField]
         int maxAllowedMoves = 3;
@@ -25,46 +19,43 @@ namespace AwesomeGame.WheelMgmt
         [SerializeField]
         float betweenAttackStatesTime = 0.1f;
 
-        Dictionary<WheelPosition, WheelFragment> fragments = new Dictionary<WheelPosition, WheelFragment>( );
         Dictionary<WheelPosition, AttackPosition> attackPositions = new Dictionary<WheelPosition, AttackPosition>( );
-        List<WheelPosition> selected = new List<WheelPosition>( );
 
-        void Start( ) {
-            if( Instance != null )
-                Destroy( this );
-            else
-                Instance = this;
+        protected override void Start( ) {
+            base.Start( );
 
-            IkControl.MoveTowardsObj = PlayerMove.transform;
+            if( IkControl != null )
+                IkControl.MoveTowardsObj = PlayerMove.transform;
         }
 
         public void AddAttackPosition( WheelPosition pos, AttackPosition att ) {
             attackPositions.Add( pos, att );
         }
 
-        public void AddFragment( WheelPosition pos, WheelFragment fragment ) {
+        public override bool AddFragment( WheelPosition pos, WheelFragment fragment ) {
+            if( fragments.ContainsKey( pos ) )
+                return false;
+
             fragments.Add( pos, fragment );
+            return true;
         }
 
-        public bool ActivateFragment( WheelPosition pos ) {
+        public override bool ActivateFragment( WheelPosition pos ) {
             if( selected.Count >= maxAllowedMoves ) {
                 IsBlocked = true;
                 return false;
             }
-
-            if( IsBlocked )
-                return false;
 
             IsClicked = true;
             selected.Add( pos );
             return true;
         }
 
-        public void ToggleActivation( bool isActive ) {
+        public override void ToggleActivation( bool isActive ) {
             wheelObj.SetActive( isActive );
         }
 
-        public void Finalize( bool isEarlyFinalize ) {
+        public override void Finalize( bool isEarlyFinalize ) {
             StartCoroutine( Attack( isEarlyFinalize ) );
         }
 

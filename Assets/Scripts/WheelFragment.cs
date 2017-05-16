@@ -11,13 +11,13 @@ namespace AwesomeGame.WheelMgmt
         public WheelPosition WheelPos { get; private set; }
 
         bool isChosen = false;
-        Wheel wheel;
+        WheelBase wheel;
         Sprite[] wheelSprites = new Sprite[3];
         Image wheelImage;
 
         void Start( ) {
             WheelPos = (WheelPosition)Enum.Parse( typeof( WheelPosition ), gameObject.name );
-            wheel = Wheel.Instance;
+            wheel = WheelBase.Instance;
             wheel.AddFragment( WheelPos, this );
 
             wheelImage = GetComponentInChildren<Image>( );
@@ -31,6 +31,9 @@ namespace AwesomeGame.WheelMgmt
         }
 
         void OnMouseEnter( ) {
+            if( wheel.IsBlocked )
+                return;
+
             if( !wheel.IsClicked ) {
                 wheelImage.overrideSprite = wheelSprites[1];
             } else {
@@ -42,6 +45,9 @@ namespace AwesomeGame.WheelMgmt
         }
 
         void OnMouseExit( ) {
+            if( wheel.IsBlocked )
+                return;
+
             if( !wheel.IsClicked )
                 wheelImage.overrideSprite = wheelSprites[0];
         }
