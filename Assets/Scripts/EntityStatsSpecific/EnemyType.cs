@@ -7,7 +7,7 @@ namespace AwesomeGame.EditorMgmt
 {
     public enum EnemyType
     {
-        TestEnemy,
+        EnemyTest,
         TestEnemy2
     }
 }

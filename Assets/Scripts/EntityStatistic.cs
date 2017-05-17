@@ -1,24 +1,44 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
+using System.IO;
 using AwesomeGame.WheelMgmt;
 using UnityEngine;
 
 namespace AwesomeGame.PlayerMgmt
 {
-    public class EntityStatistic : MonoBehaviour
+    public abstract class EntityStatistic<T> : MonoBehaviour where T : EntityStatistic<T>
     {
         public Dictionary<WheelPosition, AttackStatistic> AttackStats { get; protected set; }
         public Dictionary<WheelPosition, DefenseStatistic> DefenseStats { get; protected set; }
 
-        protected virtual void Start( ) {
-            AttackStats = new Dictionary<WheelPosition, AttackStatistic>( );
-            DefenseStats = new Dictionary<WheelPosition, DefenseStatistic>( );
+        protected static Dictionary<WheelPosition, AttackStatistic> attackStatsBase;
+        protected static Dictionary<WheelPosition, DefenseStatistic> defenseStatsBase;
+
+        static EntityStatistic( ) {
+            attackStatsBase = new Dictionary<WheelPosition, AttackStatistic>( );
+            defenseStatsBase = new Dictionary<WheelPosition, DefenseStatistic>( );
         }
 
-        protected void InitStats( ) {
-            //starting point for gui tool - DO NOT DELETE
+        protected virtual void Start( ) {
+            //AttackStats = attackStatsBase.CloneDictionaryCloningValues( );
+            //Debug.Log( AttackStats.Count );
+        }
 
-            //ending point for gui tool - DO NOT DELETE
+        protected static void InitBaseStats( string path ) {
+            foreach( WheelPosition pos in (WheelPosition[])Enum.GetValues( typeof( WheelPosition ) ) ) {
+                string json = "";
+                using( FileStream stream = new FileStream( path + "_attack_" + pos.ToString( ), FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read ) )
+                using( StreamReader reader = new StreamReader( stream ) )
+                    json = reader.ReadToEnd( );
+                attackStatsBase.Add( pos, JsonUtility.FromJson<AttackStatistic>( json ) );
+
+                using( FileStream stream = new FileStream( path + "_defense_" + pos.ToString( ), FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read ) )
+                using( StreamReader reader = new StreamReader( stream ) )
+                    json = reader.ReadToEnd( );
+                defenseStatsBase.Add( pos, JsonUtility.FromJson<DefenseStatistic>( json ) );
+            }
         }
     }
 }

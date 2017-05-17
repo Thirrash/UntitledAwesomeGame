@@ -11,17 +11,16 @@ namespace AwesomeGame.EditorMgmt
     {
         public bool IsDefenseMode = true;
         public GameObject ModeTextObj;
-        public Dropdown UnitSelectDropdown;
+        public GameObject ContentObj;
+        public GameObject ButtonObj;
 
         protected override void Start( ) {
             base.Start( );
             IsBlocked = true;
 
-            List<Dropdown.OptionData> dropdownList = new List<Dropdown.OptionData>( );
-            foreach( EnemyType type in (EnemyType[])Enum.GetValues( typeof( EnemyType ) ) )
-                dropdownList.Add( new Dropdown.OptionData( type.ToString( ) ) );
-
-            UnitSelectDropdown.AddOptions( dropdownList );
+            foreach( EnemyType type in (EnemyType[])Enum.GetValues( typeof( EnemyType ) ) ) {
+                GameObject tmpObj = Instantiate<GameObject>( ButtonObj, ContentObj.transform );
+            }
         }
 
         public override bool AddFragment( WheelPosition pos, WheelFragment fragment ) {
