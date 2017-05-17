@@ -4,16 +4,18 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using AwesomeGame.UtilityMgmt;
 
 namespace AwesomeGame.PlayerMgmt
 {
     public class EnemyTestStatistic : EntityStatistic<EnemyTestStatistic>
     {
-        static EnemyTestStatistic( ) {
-            string path = "./Assets/EnemyStats/" + MethodBase.GetCurrentMethod( ).DeclaringType.Name;
-            if( !Directory.Exists( path ) )
-                Directory.CreateDirectory( path );
-            InitBaseStats( path + "/pos" );
+        public EnemyTestStatistic( ) {
+            if( attackStatsBase.Count != 0 )
+                return;
+
+            string path = Constants.StatsBasePath + "EnemyTest/";
+            InitBaseStats( path );
         }
     }
 }

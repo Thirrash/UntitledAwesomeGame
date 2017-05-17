@@ -13,10 +13,12 @@ namespace AwesomeGame.EditorMgmt
         public GameObject ModeTextObj;
         public GameObject ContentObj;
         public GameObject ButtonObj;
+        public List<InputFieldChanger> FieldChanger;
 
         protected override void Start( ) {
             base.Start( );
             IsBlocked = true;
+            FieldChanger = new List<InputFieldChanger>( );
 
             foreach( EnemyType type in (EnemyType[])Enum.GetValues( typeof( EnemyType ) ) ) {
                 GameObject tmpObj = Instantiate<GameObject>( ButtonObj, ContentObj.transform );
@@ -37,10 +39,12 @@ namespace AwesomeGame.EditorMgmt
                 return false;
 
             if( !Input.GetKey( KeyCode.LeftControl ) )
-                Deselect( ); Debug.Log( "g" );
+                Deselect( );
 
             IsClicked = true;
             Selected.Add( pos );
+            foreach( InputFieldChanger i in FieldChanger )
+                i.UpdateText( );
             return true;
         }
 

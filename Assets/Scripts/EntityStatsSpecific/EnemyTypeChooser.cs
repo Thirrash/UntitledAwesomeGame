@@ -16,7 +16,7 @@ namespace AwesomeGame.EditorMgmt
         }
 
         public void ChangeEnemyType( ) {
-            StatisticCreation.Instance.CurrentEnemyType = type;
+            StatisticCreation.Instance.ChangeEnemyType( type );
         }
     }
 }

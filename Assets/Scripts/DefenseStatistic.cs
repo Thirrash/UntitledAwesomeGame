@@ -7,7 +7,7 @@ using UnityEngine;
 namespace AwesomeGame.PlayerMgmt
 {
     [Serializable]
-    public class DefenseStatistic : ScriptableObject, ICloneable
+    public class DefenseStatistic : ICloneable
     {
         public float BaseDmgMultiplier = 1.0f;
         public float ArmorDmgMultiplier = 1.0f;

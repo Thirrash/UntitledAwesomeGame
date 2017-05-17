@@ -10,5 +10,6 @@ namespace AwesomeGame.UtilityMgmt
         public static int EnemyLayer = 10;
 
         public static string LeftMouseButton = "Fire1";
+        public static string StatsBasePath = "./Assets/EnemyStats/";
     }
 }

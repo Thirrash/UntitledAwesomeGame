@@ -28,13 +28,16 @@ namespace AwesomeGame.PlayerMgmt
 
         protected static void InitBaseStats( string path ) {
             foreach( WheelPosition pos in (WheelPosition[])Enum.GetValues( typeof( WheelPosition ) ) ) {
+                if( pos == WheelPosition.Neutral )
+                    continue;
+
                 string json = "";
-                using( FileStream stream = new FileStream( path + "_attack_" + pos.ToString( ), FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read ) )
+                using( FileStream stream = new FileStream( path + "_attack_" + pos.ToString( ) + ".awg", FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read ) )
                 using( StreamReader reader = new StreamReader( stream ) )
                     json = reader.ReadToEnd( );
                 attackStatsBase.Add( pos, JsonUtility.FromJson<AttackStatistic>( json ) );
 
-                using( FileStream stream = new FileStream( path + "_defense_" + pos.ToString( ), FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read ) )
+                using( FileStream stream = new FileStream( path + "_defense_" + pos.ToString( ) + ".awg", FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read ) )
                 using( StreamReader reader = new StreamReader( stream ) )
                     json = reader.ReadToEnd( );
                 defenseStatsBase.Add( pos, JsonUtility.FromJson<DefenseStatistic>( json ) );
