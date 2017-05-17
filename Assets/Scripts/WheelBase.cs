@@ -13,14 +13,17 @@ namespace AwesomeGame.WheelMgmt
         [SerializeField]
         protected GameObject wheelObj;
 
-        protected Dictionary<WheelPosition, WheelFragment> fragments = new Dictionary<WheelPosition, WheelFragment>( );
-        protected List<WheelPosition> selected = new List<WheelPosition>( );
+        protected Dictionary<WheelPosition, WheelFragment> fragments;
+        public List<WheelPosition> Selected { get; protected set; }
 
         protected virtual void Start( ) {
             if( Instance != null )
                 Destroy( this );
             else
                 Instance = this;
+
+            fragments = new Dictionary<WheelPosition, WheelFragment>( );
+            Selected = new List<WheelPosition>( );
         }
 
         public abstract bool AddFragment( WheelPosition pos, WheelFragment fragment );

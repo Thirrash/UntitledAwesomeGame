@@ -41,13 +41,13 @@ namespace AwesomeGame.WheelMgmt
         }
 
         public override bool ActivateFragment( WheelPosition pos ) {
-            if( selected.Count >= maxAllowedMoves ) {
+            if( Selected.Count >= maxAllowedMoves ) {
                 IsBlocked = true;
                 return false;
             }
 
             IsClicked = true;
-            selected.Add( pos );
+            Selected.Add( pos );
             return true;
         }
 
@@ -61,24 +61,24 @@ namespace AwesomeGame.WheelMgmt
 
         IEnumerator Attack( bool isEarlyFinalize ) {
             if( !isEarlyFinalize ) {
-                foreach( WheelPosition w in selected )
+                foreach( WheelPosition w in Selected )
                     Debug.Log( "Chosen: " + w.ToString( ) );
 
-                PlayerMove.MoveTowards( attackPositions[selected[0]].transform, fromAndToNeutralStateTime / Time.timeScale );
+                PlayerMove.MoveTowards( attackPositions[Selected[0]].transform, fromAndToNeutralStateTime / Time.timeScale );
                 yield return new WaitUntil( ( ) => PlayerMove.HasFinishedMove );
 
-                for( int i = 1; i < selected.Count; i++ ) {
-                    PlayerMove.MoveTowards( attackPositions[selected[i]].transform, betweenAttackStatesTime / Time.timeScale );
+                for( int i = 1; i < Selected.Count; i++ ) {
+                    PlayerMove.MoveTowards( attackPositions[Selected[i]].transform, betweenAttackStatesTime / Time.timeScale );
                     yield return new WaitUntil( ( ) => PlayerMove.HasFinishedMove );
                 }
 
                 PlayerMove.MoveTowards( attackPositions[WheelPosition.Neutral].transform, fromAndToNeutralStateTime / Time.timeScale );
                 yield return new WaitUntil( ( ) => PlayerMove.HasFinishedMove );
 
-                foreach( WheelPosition w in selected )
+                foreach( WheelPosition w in Selected )
                     fragments[w].ResetFragment( );
 
-                selected.Clear( );
+                Selected.Clear( );
                 IsClicked = false;
                 IsBlocked = false;
             } else {

@@ -20,6 +20,7 @@ namespace AwesomeGame.EditorMgmt
 
             foreach( EnemyType type in (EnemyType[])Enum.GetValues( typeof( EnemyType ) ) ) {
                 GameObject tmpObj = Instantiate<GameObject>( ButtonObj, ContentObj.transform );
+                tmpObj.GetComponentInChildren<Text>( ).text = type.ToString( );
             }
         }
 
@@ -32,14 +33,14 @@ namespace AwesomeGame.EditorMgmt
         }
 
         public override bool ActivateFragment( WheelPosition pos ) {
-            if( selected.Contains( pos ) )
+            if( Selected.Contains( pos ) )
                 return false;
 
             if( !Input.GetKey( KeyCode.LeftControl ) )
                 Deselect( ); Debug.Log( "g" );
 
             IsClicked = true;
-            selected.Add( pos );
+            Selected.Add( pos );
             return true;
         }
 
@@ -56,7 +57,7 @@ namespace AwesomeGame.EditorMgmt
                 f.ResetFragment( );
 
             IsClicked = false;
-            selected.Clear( );
+            Selected.Clear( );
         }
 
         public void ChangeMode( ) {

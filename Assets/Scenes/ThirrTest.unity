@@ -190,8 +190,8 @@ MonoBehaviour:
   IkControl: {fileID: 1724877769}
   PlayerMove: {fileID: 1925393502}
   maxAllowedMoves: 5
-  fromAndToNeutralStateTime: 2
-  betweenAttackStatesTime: 1
+  fromAndToNeutralStateTime: 0.4
+  betweenAttackStatesTime: 0.2
 --- !u!1 &377554033
 GameObject:
   m_ObjectHideFlags: 0
