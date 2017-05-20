@@ -12,18 +12,19 @@ namespace AwesomeGame.WheelMgmt
 
         bool isChosen = false;
         WheelBase wheel;
-        Sprite[] wheelSprites = new Sprite[3];
-        Image wheelImage;
+        Material currMat;
+        Dictionary<string, Color> matColor = new Dictionary<string, Color> {
+            { "Neutral", new Color( 1.0f, 1.0f, 1.0f, 0.2f ) },
+            { "Highlighted", new Color( 1.0f, 0.0f, 0.0f, 0.5f ) },
+            { "Selected", new Color( 1.0f, 0.0f, 0.0f, 0.8f ) }
+        };
 
         void Start( ) {
             WheelPos = (WheelPosition)Enum.Parse( typeof( WheelPosition ), gameObject.name );
             wheel = WheelBase.Instance;
             wheel.AddFragment( WheelPos, this );
-
-            wheelImage = GetComponentInChildren<Image>( );
-            for( int i = 0; i < 3; i++ )
-                wheelSprites[i] = Resources.Load<Sprite>( "Textures/Wheel/" + gameObject.name + "_" + i );
-            wheelImage.overrideSprite = wheelSprites[0];
+            currMat = GetComponent<MeshRenderer>( ).material;
+            currMat.color = matColor["Neutral"];
         }
 
         void Update( ) {
@@ -35,11 +36,11 @@ namespace AwesomeGame.WheelMgmt
                 return;
 
             if( !wheel.IsClicked ) {
-                wheelImage.overrideSprite = wheelSprites[1];
+                currMat.color = matColor["Highlighted"];
             } else {
                 if( wheel.ActivateFragment( WheelPos ) ) {
                     isChosen = true;
-                    wheelImage.overrideSprite = wheelSprites[2];
+                    currMat.color = matColor["Selected"];
                 }
             }
         }
@@ -49,13 +50,13 @@ namespace AwesomeGame.WheelMgmt
                 return;
 
             if( !wheel.IsClicked )
-                wheelImage.overrideSprite = wheelSprites[0];
+                currMat.color = matColor["Neutral"];
         }
 
         void OnMouseDown( ) {
             if( wheel.ActivateFragment( WheelPos ) ) {
                 isChosen = true;
-                wheelImage.overrideSprite = wheelSprites[2];
+                currMat.color = matColor["Selected"];
             }
         }
 
@@ -65,7 +66,7 @@ namespace AwesomeGame.WheelMgmt
 
         public void ResetFragment( ) {
             isChosen = false;
-            wheelImage.overrideSprite = wheelSprites[0];
+            currMat.color = matColor["Neutral"];
         }
     }
 }

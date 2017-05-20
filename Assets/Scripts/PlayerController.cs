@@ -13,14 +13,26 @@ namespace AwesomeGame.PlayerMgmt
         [SerializeField]
         float verticalSensitivity = 0.0f;
 
+        [SerializeField]
+        float jumpForce = 0.0f;
+
+        [SerializeField]
+        float timeBetweenJumps = 1.5f;
+
+        bool isAbleToJump = true;
+        Rigidbody rigid;
+
         void Start( ) {
+            rigid = GetComponent<Rigidbody>( );
             MovementTrigger.Instance.MoveHorizontal += MoveHorizontal;
             MovementTrigger.Instance.MoveVertical += MoveVertical;
+            MovementTrigger.Instance.Jump += Jump;
         }
 
         void OnDestroy( ) {
             MovementTrigger.Instance.MoveHorizontal -= MoveHorizontal;
             MovementTrigger.Instance.MoveVertical -= MoveVertical;
+            MovementTrigger.Instance.Jump -= Jump;
         }
 
         void MoveHorizontal( float val ) {
@@ -29,6 +41,20 @@ namespace AwesomeGame.PlayerMgmt
 
         void MoveVertical( float val ) {
             transform.Translate( new Vector3( 0.0f, 0.0f, val * verticalSensitivity * Time.deltaTime ), Space.Self );
+        }
+
+        void Jump( ) {
+            if( !isAbleToJump )
+                return;
+
+            rigid.AddForce( new Vector3( 0.0f, jumpForce, 0.0f ), ForceMode.Impulse );
+            StartCoroutine( WaitBetweenJumps( ) );
+        }
+
+        IEnumerator WaitBetweenJumps( ) {
+            isAbleToJump = false;
+            yield return new WaitForSecondsRealtime( timeBetweenJumps );
+            isAbleToJump = true;
         }
     }
 }

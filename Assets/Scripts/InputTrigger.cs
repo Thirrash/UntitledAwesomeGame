@@ -28,7 +28,7 @@ namespace AwesomeGame.EventMgmt
         void CheckMouse( ) {
             float tmp = 0.0f;
 
-            if( Input.GetButtonDown( Constants.LeftMouseButton ) )
+            if( Input.GetButtonDown( Constants.MouseLeftInput ) )
                 MouseLeftButton.Invoke( );
         }
     }
