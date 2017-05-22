@@ -7,29 +7,10 @@ namespace AwesomeGame.WheelMgmt
 {
     public class Wheel : WheelBase
     {
-        public IKControl IkControl;
-        public MoveObject PlayerMove;
-
-        [SerializeField]
-        int maxAllowedMoves = 3;
-
-        [SerializeField]
-        float fromAndToNeutralStateTime = 0.4f;
-
-        [SerializeField]
-        float betweenAttackStatesTime = 0.1f;
-
-        Dictionary<WheelPosition, AttackPosition> attackPositions = new Dictionary<WheelPosition, AttackPosition>( );
+        public PlayerBehaviour behaviour;
 
         protected override void Start( ) {
             base.Start( );
-
-            if( IkControl != null )
-                IkControl.MoveTowardsObj = PlayerMove.transform;
-        }
-
-        public void AddAttackPosition( WheelPosition pos, AttackPosition att ) {
-            attackPositions.Add( pos, att );
         }
 
         public override bool AddFragment( WheelPosition pos, WheelFragment fragment ) {
@@ -41,7 +22,7 @@ namespace AwesomeGame.WheelMgmt
         }
 
         public override bool ActivateFragment( WheelPosition pos ) {
-            if( Selected.Count >= maxAllowedMoves ) {
+            if( Selected.Count >= behaviour.MaxAllowedMoves ) {
                 IsBlocked = true;
                 return false;
             }
@@ -56,25 +37,12 @@ namespace AwesomeGame.WheelMgmt
         }
 
         public override void Finalize( bool isEarlyFinalize ) {
-            StartCoroutine( Attack( isEarlyFinalize ) );
+            behaviour.ChangeSelected( Selected );
+            Reset( isEarlyFinalize );
         }
 
-        IEnumerator Attack( bool isEarlyFinalize ) {
+        void Reset( bool isEarlyFinalize ) {
             if( !isEarlyFinalize ) {
-                foreach( WheelPosition w in Selected )
-                    Debug.Log( "Chosen: " + w.ToString( ) );
-
-                PlayerMove.MoveTowards( attackPositions[Selected[0]].transform, fromAndToNeutralStateTime / Time.timeScale );
-                yield return new WaitUntil( ( ) => PlayerMove.HasFinishedMove );
-
-                for( int i = 1; i < Selected.Count; i++ ) {
-                    PlayerMove.MoveTowards( attackPositions[Selected[i]].transform, betweenAttackStatesTime / Time.timeScale );
-                    yield return new WaitUntil( ( ) => PlayerMove.HasFinishedMove );
-                }
-
-                PlayerMove.MoveTowards( attackPositions[WheelPosition.Neutral].transform, fromAndToNeutralStateTime / Time.timeScale );
-                yield return new WaitUntil( ( ) => PlayerMove.HasFinishedMove );
-
                 foreach( WheelPosition w in Selected )
                     fragments[w].ResetFragment( );
 
@@ -84,8 +52,6 @@ namespace AwesomeGame.WheelMgmt
             } else {
                 IsBlocked = true;
             }
-
-            yield return null;
         }
     }
 }

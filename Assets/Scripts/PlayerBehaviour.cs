@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using AwesomeGame.EventMgmt;
 using AwesomeGame.GuiMgmt;
 using AwesomeGame.UtilityMgmt;
@@ -11,16 +9,10 @@ using UnityEngine;
 
 namespace AwesomeGame.PlayerMgmt
 {
-    public sealed class PlayerAttack : MonoBehaviour
+    public class PlayerBehaviour : EntityBehaviour
     {
         [SerializeField]
-        float maxAttackRange = 2.0f;
-
-        [SerializeField]
         float attackTime = 3.0f;
-
-        [SerializeField]
-        float timeBetweenAttacks = 1.0f;
 
         [SerializeField]
         float timeToReachSlowMotion = 1.0f;
@@ -28,15 +20,15 @@ namespace AwesomeGame.PlayerMgmt
         [SerializeField]
         float slowMotionTimeScale = 0.1f;
 
-        bool isAttacking = false;
         Wheel wheel;
 
-        void Start( ) {
+        protected override void Start( ) {
+            base.Start( );
             InputTrigger.Instance.MouseLeftButton += InitAttack;
             wheel = (Wheel)Wheel.Instance;
         }
 
-        void InitAttack( ) {
+        protected override void InitAttack( ) {
             if( isAttacking )
                 return;
 
@@ -49,6 +41,10 @@ namespace AwesomeGame.PlayerMgmt
             CursorLock.Instance.UnlockCursor( );
             StartCoroutine( HandleSlowMotion( ) );
             StartCoroutine( HandleCooldown( ) );
+        }
+
+        protected override void InitDefense( ) {
+            throw new NotImplementedException( );
         }
 
         IEnumerator HandleSlowMotion( ) {
@@ -67,12 +63,28 @@ namespace AwesomeGame.PlayerMgmt
 
         IEnumerator HandleCooldown( ) {
             yield return new WaitForSecondsRealtime( attackTime );
+
             wheel.Finalize( false );
-            wheel.ToggleActivation( false );
+            StartCoroutine( Attack( ) );
             CursorLock.Instance.LockCursor( );
+            wheel.ToggleActivation( false );
 
             yield return new WaitForSecondsRealtime( timeBetweenAttacks );
             isAttacking = false;
         }
+
+        IEnumerator Attack( ) {
+            movement.MoveTowards( attackPos[selected[0]].transform, fromAndToNeutralStateTime / Time.timeScale );
+            yield return new WaitUntil( ( ) => movement.HasFinishedMove );
+
+            for( int i = 1; i < selected.Count; i++ ) {
+                movement.MoveTowards( attackPos[selected[i]].transform, betweenAttackStatesTime / Time.timeScale );
+                yield return new WaitUntil( ( ) => movement.HasFinishedMove );
+            }
+
+            movement.MoveTowards( attackPos[WheelPosition.Neutral].transform, fromAndToNeutralStateTime / Time.timeScale );
+            yield return new WaitUntil( ( ) => movement.HasFinishedMove );
+        }
     }
 }
+

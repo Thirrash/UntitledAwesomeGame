@@ -7,14 +7,10 @@ using UnityEngine;
 
 namespace AwesomeGame.PlayerMgmt
 {
-    public class PlayerStatistic : MonoBehaviour
+    public class PlayerStatistic : EntityStatistic
     {
-        public Dictionary<WheelPosition, AttackStatistic> AttackStats { get; protected set; }
-        public Dictionary<WheelPosition, DefenseStatistic> DefenseStats { get; protected set; }
-
-        protected virtual void Start( ) {
-            AttackStats = new Dictionary<WheelPosition, AttackStatistic>( );
-            DefenseStats = new Dictionary<WheelPosition, DefenseStatistic>( );
+        protected override void Start( ) {
+            base.Start( );
         }
     }
 }

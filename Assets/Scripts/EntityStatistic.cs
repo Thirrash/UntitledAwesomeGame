@@ -8,25 +8,37 @@ using UnityEngine;
 
 namespace AwesomeGame.PlayerMgmt
 {
-    public abstract class EntityStatistic<T> : MonoBehaviour where T : EntityStatistic<T>
+    public abstract class EntityStatistic : MonoBehaviour
     {
+        [SerializeField]
+        float maxHitPoints;
+        public float MaxHitPoints {
+            get { return maxHitPoints; }
+            protected set { maxHitPoints = value; }
+        }
+
+        float hitPoints;
+        public float HitPoints {
+            get { return hitPoints; }
+            protected set {
+                hitPoints = value;
+                if( hitPoints <= 0.0f ) {
+                    hitPoints = 0.0f;
+                    Die( );
+                }
+            }
+        }
+
         public Dictionary<WheelPosition, AttackStatistic> AttackStats { get; protected set; }
         public Dictionary<WheelPosition, DefenseStatistic> DefenseStats { get; protected set; }
 
-        protected static Dictionary<WheelPosition, AttackStatistic> attackStatsBase;
-        protected static Dictionary<WheelPosition, DefenseStatistic> defenseStatsBase;
-
-        static EntityStatistic( ) {
-            attackStatsBase = new Dictionary<WheelPosition, AttackStatistic>( );
-            defenseStatsBase = new Dictionary<WheelPosition, DefenseStatistic>( );
-        }
-
         protected virtual void Start( ) {
-            //AttackStats = attackStatsBase.CloneDictionaryCloningValues( );
-            //Debug.Log( AttackStats.Count );
+
         }
 
-        protected static void InitBaseStats( string path ) {
+        protected static void InitBaseStats( Dictionary<WheelPosition, AttackStatistic> baseAttack,
+                                             Dictionary<WheelPosition, DefenseStatistic> baseDefense, 
+                                             string path ) {
             foreach( WheelPosition pos in (WheelPosition[])Enum.GetValues( typeof( WheelPosition ) ) ) {
                 if( pos == WheelPosition.Neutral )
                     continue;
@@ -35,13 +47,18 @@ namespace AwesomeGame.PlayerMgmt
                 using( FileStream stream = new FileStream( path + "_attack_" + pos.ToString( ) + ".awg", FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read ) )
                 using( StreamReader reader = new StreamReader( stream ) )
                     json = reader.ReadToEnd( );
-                attackStatsBase.Add( pos, JsonUtility.FromJson<AttackStatistic>( json ) );
+                baseAttack.Add( pos, JsonUtility.FromJson<AttackStatistic>( json ) );
 
                 using( FileStream stream = new FileStream( path + "_defense_" + pos.ToString( ) + ".awg", FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read ) )
                 using( StreamReader reader = new StreamReader( stream ) )
                     json = reader.ReadToEnd( );
-                defenseStatsBase.Add( pos, JsonUtility.FromJson<DefenseStatistic>( json ) );
+                baseDefense.Add( pos, JsonUtility.FromJson<DefenseStatistic>( json ) );
             }
+        }
+
+        protected virtual void Die( ) {
+            Debug.Log( gameObject.name + " has died!" );
+            Destroy( gameObject );
         }
     }
 }
