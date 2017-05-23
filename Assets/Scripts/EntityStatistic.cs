@@ -32,8 +32,11 @@ namespace AwesomeGame.PlayerMgmt
         public Dictionary<WheelPosition, AttackStatistic> AttackStats { get; protected set; }
         public Dictionary<WheelPosition, DefenseStatistic> DefenseStats { get; protected set; }
 
-        protected virtual void Start( ) {
+        ComboHandler comboHandler;
 
+        protected virtual void Start( ) {
+            comboHandler = new ComboHandler( );
+            StartCoroutine( UpdateComboHandler( ) );
         }
 
         protected static void InitBaseStats( Dictionary<WheelPosition, AttackStatistic> baseAttack,
@@ -59,6 +62,17 @@ namespace AwesomeGame.PlayerMgmt
         protected virtual void Die( ) {
             Debug.Log( gameObject.name + " has died!" );
             Destroy( gameObject );
+        }
+
+        protected virtual void TakeDamage( Dictionary<WheelPosition, AttackStatistic> attackDictionary, ComboHandler comboMultiplier ) {
+
+        }
+
+        protected IEnumerator UpdateComboHandler( ) {
+            while( true ) {
+                comboHandler.UpdateCombo( 0.1f );
+                yield return new WaitForSeconds( 0.1f );
+            }
         }
     }
 }

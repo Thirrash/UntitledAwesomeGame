@@ -638,6 +638,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 114214015756581444, guid: a4224354245b52d45b0fb2cb007aa923,
+        type: 2}
+      propertyPath: betweenAttackStatesTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114214015756581444, guid: a4224354245b52d45b0fb2cb007aa923,
+        type: 2}
+      propertyPath: fromAndToNeutralStateTime
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a4224354245b52d45b0fb2cb007aa923, type: 2}
   m_IsPrefabParent: 0
