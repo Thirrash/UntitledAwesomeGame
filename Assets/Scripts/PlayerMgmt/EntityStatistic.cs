@@ -32,30 +32,43 @@ namespace AwesomeGame.PlayerMgmt
         public Dictionary<WheelPosition, AttackStatistic> AttackStats { get; protected set; }
         public Dictionary<WheelPosition, DefenseStatistic> DefenseStats { get; protected set; }
 
-        ComboHandler comboHandler;
+        protected ComboHandler comboHandler;
 
         protected virtual void Start( ) {
+            AttackStats = new Dictionary<WheelPosition, AttackStatistic>( );
+            DefenseStats = new Dictionary<WheelPosition, DefenseStatistic>( );
             comboHandler = new ComboHandler( );
             StartCoroutine( UpdateComboHandler( ) );
         }
 
         protected static void InitBaseStats( Dictionary<WheelPosition, AttackStatistic> baseAttack,
-                                             Dictionary<WheelPosition, DefenseStatistic> baseDefense, 
+                                             Dictionary<WheelPosition, DefenseStatistic> baseDefense,
                                              string path ) {
             foreach( WheelPosition pos in (WheelPosition[])Enum.GetValues( typeof( WheelPosition ) ) ) {
                 if( pos == WheelPosition.Neutral )
                     continue;
 
+                Debug.Log( pos.ToString( ) + baseDefense.Count );
                 string json = "";
                 using( FileStream stream = new FileStream( path + "_attack_" + pos.ToString( ) + ".awg", FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read ) )
                 using( StreamReader reader = new StreamReader( stream ) )
                     json = reader.ReadToEnd( );
-                baseAttack.Add( pos, JsonUtility.FromJson<AttackStatistic>( json ) );
+                AttackStatistic attack = JsonUtility.FromJson<AttackStatistic>( json );
+                if( attack != null )
+                    baseAttack.Add( pos, attack );
+                else
+                    Debug.LogWarning( "AttackStat is null in " + path ); baseAttack.Add( pos, new AttackStatistic( ) );
 
                 using( FileStream stream = new FileStream( path + "_defense_" + pos.ToString( ) + ".awg", FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read ) )
                 using( StreamReader reader = new StreamReader( stream ) )
                     json = reader.ReadToEnd( );
-                baseDefense.Add( pos, JsonUtility.FromJson<DefenseStatistic>( json ) );
+                DefenseStatistic def = JsonUtility.FromJson<DefenseStatistic>( json );
+                if( def != null )
+                    baseDefense.Add( pos, def );
+                else {
+                    Debug.LogWarning( "DefenseStat is null in " + path );
+                    baseDefense.Add( pos, new DefenseStatistic( ) );
+                }
             }
         }
 
@@ -65,11 +78,11 @@ namespace AwesomeGame.PlayerMgmt
         }
 
         public void DealDamage( GameObject entity, List<WheelPosition> selected ) {
-            Dictionary<WheelPosition, AttackStatistic> selectedAttack = AttackStats.CloneCertainValues( selected );
-            entity.GetComponent<EntityStatistic>( ).TakeDamage( selectedAttack, comboHandler );
+            List<AttackStatistic> attackStat = new List<AttackStatistic>( AttackStats.CloneCertainValues( selected ).Values );
+            entity.GetComponent<EntityStatistic>( ).TakeDamage( selected, attackStat, comboHandler );
         }
 
-        public virtual void TakeDamage( Dictionary<WheelPosition, AttackStatistic> attackDictionary, ComboHandler comboMultiplier ) {
+        public virtual void TakeDamage( List<WheelPosition> position, List<AttackStatistic> attack, ComboHandler comboMultiplier ) {
 
         }
 

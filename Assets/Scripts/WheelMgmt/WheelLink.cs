@@ -11,6 +11,7 @@ namespace AwesomeGame.WheelMgmt
         static readonly float innerRadius = 1.2f;
         static readonly float outerRadius = 2.2f;
         static readonly float sqrt2by2 = (float)Math.Sqrt( 2.0 ) / 2.0f;
+        public static readonly float MaximumDistance = 2.0f * outerRadius;
 
         static readonly Dictionary<WheelPosition, List<WheelPosition>> adjacent = new Dictionary<WheelPosition, List<WheelPosition>> {
             { WheelPosition.Center, new List<WheelPosition> { WheelPosition.InnerBottom, WheelPosition.InnerLeft, WheelPosition.InnerLeftBottom,

@@ -11,6 +11,13 @@ namespace AwesomeGame.PlayerMgmt
     {
         protected override void Start( ) {
             base.Start( );
+
+            foreach( WheelPosition pos in (WheelPosition[])Enum.GetValues( typeof( WheelPosition ) ) ) {
+                if( pos == WheelPosition.Neutral )
+                    continue;
+                AttackStats.Add( pos, new AttackStatistic( ) );
+                DefenseStats.Add( pos, new DefenseStatistic( ) );
+            }
         }
     }
 }

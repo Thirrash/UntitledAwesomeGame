@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using AwesomeGame.WheelMgmt;
 using UnityEngine;
 
 namespace AwesomeGame.PlayerMgmt
@@ -23,6 +24,11 @@ namespace AwesomeGame.PlayerMgmt
 
         public float GetReduction( ) {
             return BaseDmgReduction + ArmorDmgReduction;
+        }
+
+        public float GetReduction( WheelPosition attackPos, WheelPosition defPos ) {
+            float distanceModifier = 1.0f - WheelLink.GetDistance( attackPos, defPos ) / WheelLink.MaximumDistance;
+            return BaseDmgReduction + ( ArmorDmgReduction ) * distanceModifier;
         }
     }
 }

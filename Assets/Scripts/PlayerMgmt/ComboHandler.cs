@@ -44,6 +44,9 @@ namespace AwesomeGame.PlayerMgmt
             set { comboDimnishPerSecond = ( value > 0.0f ) ? value : 0.0f; }
         }
 
+        public Vector2 ComboGenerationModifierForAttack { get; set; }
+        public Vector2 ComboGenerationModifierForDefense { get; set; }
+
         public List<ComboModifier> DebuffModifiers { get; private set; }
         public List<ComboModifier> BuffModifiers { get; private set; }
 
@@ -57,6 +60,8 @@ namespace AwesomeGame.PlayerMgmt
         public ComboHandler( ) {
             DebuffModifiers = new List<ComboModifier>( );
             BuffModifiers = new List<ComboModifier>( );
+            ComboGenerationModifierForAttack = new Vector2( -0.6f, 0.6f );
+            ComboGenerationModifierForDefense = new Vector2( -0.4f, -0.4f );
         }
 
         public void AddModifier( ComboModifier modifier ) {
@@ -92,6 +97,13 @@ namespace AwesomeGame.PlayerMgmt
 
         public float GetActualModifier( ) {
             return Mathf.Clamp( CurrentMultiplier + GetLowestDebuffModifier( ) + GetHighestBuffModifier( ), MinMultiplier, MaxMultiplier );
+        }
+
+        public void ChangeCombo( float percentDamageDealt, bool isForAttack ) {
+            float generationRange = ( isForAttack ) ? ComboGenerationModifierForAttack.x + ComboGenerationModifierForAttack.y :
+                ComboGenerationModifierForDefense.x + ComboGenerationModifierForDefense.y;
+            CurrentMultiplier += ( isForAttack ) ? ComboGenerationModifierForAttack.x + generationRange * percentDamageDealt :
+                ComboGenerationModifierForDefense.x + generationRange * percentDamageDealt;
         }
 
         float GetLowestDebuffModifier( ) {
