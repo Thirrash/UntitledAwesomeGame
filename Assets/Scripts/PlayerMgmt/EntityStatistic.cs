@@ -64,7 +64,12 @@ namespace AwesomeGame.PlayerMgmt
             Destroy( gameObject );
         }
 
-        protected virtual void TakeDamage( Dictionary<WheelPosition, AttackStatistic> attackDictionary, ComboHandler comboMultiplier ) {
+        public void DealDamage( GameObject entity, List<WheelPosition> selected ) {
+            Dictionary<WheelPosition, AttackStatistic> selectedAttack = AttackStats.CloneCertainValues( selected );
+            entity.GetComponent<EntityStatistic>( ).TakeDamage( selectedAttack, comboHandler );
+        }
+
+        public virtual void TakeDamage( Dictionary<WheelPosition, AttackStatistic> attackDictionary, ComboHandler comboMultiplier ) {
 
         }
 

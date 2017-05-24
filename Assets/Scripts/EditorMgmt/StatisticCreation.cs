@@ -83,7 +83,7 @@ namespace AwesomeGame.EditorMgmt
             float value = float.Parse( val );
             value = Mathf.Clamp( value, 0.0f, 1.0f );
             foreach( WheelPosition pos in WheelEditor.Instance.Selected )
-                DefenseStats[pos].BaseDmgMultiplier = value;
+                DefenseStats[pos].BaseDmgReduction = value;
         }
     }
 }

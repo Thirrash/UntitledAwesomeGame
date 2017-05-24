@@ -7,8 +7,8 @@ namespace AwesomeGame.PlayerMgmt
 {
     public class AttackStatistic : ICloneable
     {
-        public float BaseDmgMultiplier;
-        public float WeaponDmgMultiplier;
+        public float BaseDmg = 1.0f;
+        public float WeaponDmg = 1.0f;
 
         public AttackStatistic( ) {
 
@@ -20,7 +20,7 @@ namespace AwesomeGame.PlayerMgmt
         }
 
         public float GetBoost( ) {
-            return BaseDmgMultiplier * WeaponDmgMultiplier;
+            return BaseDmg + WeaponDmg;
         }
     }
 }

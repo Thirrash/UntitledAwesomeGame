@@ -10,4 +10,13 @@ public static class DictionaryExtension
         return ret;
     }
 
+    public static Dictionary<TKey, TValue> CloneCertainValues<TKey, TValue> ( this Dictionary<TKey, TValue> original, List<TKey> selectiveList ) {
+        Dictionary<TKey, TValue> ret = new Dictionary<TKey, TValue>( );
+        foreach( TKey k in selectiveList ) {
+            TValue val;
+            if( original.TryGetValue( k, out val ) )
+                ret.Add( k, val );
+        }
+        return ret;
+    }
 }

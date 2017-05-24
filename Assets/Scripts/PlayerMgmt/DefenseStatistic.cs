@@ -9,8 +9,8 @@ namespace AwesomeGame.PlayerMgmt
     [Serializable]
     public class DefenseStatistic : ICloneable
     {
-        public float BaseDmgMultiplier = 1.0f;
-        public float ArmorDmgMultiplier = 1.0f;
+        public float BaseDmgReduction = 1.0f;
+        public float ArmorDmgReduction = 1.0f;
 
         public DefenseStatistic( ) {
 
@@ -22,7 +22,7 @@ namespace AwesomeGame.PlayerMgmt
         }
 
         public float GetReduction( ) {
-            return BaseDmgMultiplier * ArmorDmgMultiplier;
+            return BaseDmgReduction + ArmorDmgReduction;
         }
     }
 }

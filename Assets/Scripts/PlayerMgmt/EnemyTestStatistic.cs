@@ -26,5 +26,17 @@ namespace AwesomeGame.PlayerMgmt
             string path = Constants.StatsBasePath + "EnemyTest/";
             InitBaseStats( attackStatsBase, defenseStatsBase, path );
         }
+
+        public override void TakeDamage( Dictionary<WheelPosition, AttackStatistic> attackDictionary, ComboHandler comboMultiplier ) {
+            base.TakeDamage( attackDictionary, comboMultiplier );
+            WheelPosition first = WheelPosition.InnerLeft;
+            WheelPosition second = WheelPosition.OuterLeft;
+            
+            float maxNonComboDamage = 0.0f;
+            float actualNonComboDamage = 0.0f;
+            foreach( KeyValuePair<WheelPosition, AttackStatistic> k in attackDictionary ) {
+                maxNonComboDamage += k.Value.GetBoost( );
+            } 
+        }
     }
 }

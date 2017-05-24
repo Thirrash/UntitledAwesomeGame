@@ -21,11 +21,13 @@ namespace AwesomeGame.PlayerMgmt
         float slowMotionTimeScale = 0.1f;
 
         Wheel wheel;
+        PlayerStatistic stat;
 
         protected override void Start( ) {
             base.Start( );
             InputTrigger.Instance.MouseLeftButton += InitAttack;
             wheel = (Wheel)Wheel.Instance;
+            stat = GetComponent<PlayerStatistic>( );
         }
 
         protected override void InitAttack( ) {
@@ -40,7 +42,7 @@ namespace AwesomeGame.PlayerMgmt
             wheel.ToggleActivation( true );
             CursorLock.Instance.UnlockCursor( );
             StartCoroutine( HandleSlowMotion( ) );
-            StartCoroutine( HandleCooldown( ) );
+            StartCoroutine( HandleCooldown( ( ) => hit.collider.gameObject, ( ) => selected ) );
         }
 
         protected override void InitDefense( ) {
@@ -61,13 +63,15 @@ namespace AwesomeGame.PlayerMgmt
             }
         }
 
-        IEnumerator HandleCooldown( ) {
+        IEnumerator HandleCooldown( Func<GameObject> hitObjReference, Func<List<WheelPosition>> selectedListReference ) {
             yield return new WaitForSecondsRealtime( attackTime );
 
             wheel.Finalize( false );
             StartCoroutine( Attack( ) );
             CursorLock.Instance.LockCursor( );
             wheel.ToggleActivation( false );
+
+            stat.DealDamage( hitObjReference( ), selectedListReference( ) );
 
             yield return new WaitForSecondsRealtime( timeBetweenAttacks );
             isAttacking = false;
