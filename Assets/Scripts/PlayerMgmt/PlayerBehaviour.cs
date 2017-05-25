@@ -78,6 +78,9 @@ namespace AwesomeGame.PlayerMgmt
         }
 
         IEnumerator Attack( ) {
+            if( selected.Count == 0 )
+                yield break;
+
             movement.MoveTowards( attackPos[selected[0]].transform, fromAndToNeutralStateTime / Time.timeScale );
             yield return new WaitUntil( ( ) => movement.HasFinishedMove );
 

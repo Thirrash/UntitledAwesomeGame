@@ -18,18 +18,20 @@ namespace AwesomeGame.PlayerMgmt
         static EnemyTestStatistic( ) {
             attackStatsBase = new Dictionary<WheelPosition, AttackStatistic>( );
             defenseStatsBase = new Dictionary<WheelPosition, DefenseStatistic>( );
+            Debug.Log( "Init EnemyTest" );
+            string path = Constants.StatsBasePath + "EnemyTest/";
+            InitBaseStats( attackStatsBase, defenseStatsBase, path );
         }
 
         public EnemyTestStatistic( ) {
-            if( attackStatsBase.Count != 0 )
-                return;
-
-            Debug.Log( "Start" );
-            string path = Constants.StatsBasePath + "EnemyTest/";
-            InitBaseStats( attackStatsBase, defenseStatsBase, path );
             AttackStats = attackStatsBase.CloneDictionaryCloningValues( );
             DefenseStats = defenseStatsBase.CloneDictionaryCloningValues( );
             Debug.Log( "Copied count = " + DefenseStats.Count );
+        }
+
+        protected override void Start( ) {
+            base.Start( );
+            Debug.Log( HealthHandler.CurrentHealth );
         }
 
         public override void TakeDamage( List<WheelPosition> position, List<AttackStatistic> attack, ComboHandler comboMultiplier ) {
@@ -41,7 +43,6 @@ namespace AwesomeGame.PlayerMgmt
             float maxNonComboDamage = 0.0f;
             float actualNonComboDamage = 0.0f;
             for( int i = 0; i < position.Count; i++ ) {
-                Debug.Log( position[i].ToString() );
                 maxNonComboDamage += attack[i].GetBoost( );
                 actualNonComboDamage += Mathf.Clamp( attack[i].GetBoost( ) -
                     ( ( rolledPos.Count > i ) ? DefenseStats[position[i]].GetReduction( position[i], rolledPos[i] ) : DefenseStats[position[i]].GetReduction( ) ),
@@ -49,10 +50,10 @@ namespace AwesomeGame.PlayerMgmt
                 float percentDamageDealt = actualNonComboDamage / maxNonComboDamage;
                 comboMultiplier.ChangeCombo( percentDamageDealt, true );
                 Debug.Log( "Combo = " + comboMultiplier.CurrentMultiplier );
-                comboHandler.ChangeCombo( percentDamageDealt, false );
-
-                HitPoints -= actualNonComboDamage * comboMultiplier.CurrentMultiplier;
-                Debug.Log( "HP = " + HitPoints );
+                ComboHandler.ChangeCombo( percentDamageDealt, false );
+                Debug.Log( "Damage = " + actualNonComboDamage + " / " + maxNonComboDamage );
+                HealthHandler.CurrentHealth -= actualNonComboDamage * comboMultiplier.CurrentMultiplier;
+                Debug.Log( "HP = " + HealthHandler.CurrentHealth );
             }
         }
     }

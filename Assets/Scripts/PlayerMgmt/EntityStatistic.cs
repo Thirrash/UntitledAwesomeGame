@@ -10,34 +10,18 @@ namespace AwesomeGame.PlayerMgmt
 {
     public abstract class EntityStatistic : MonoBehaviour
     {
-        [SerializeField]
-        float maxHitPoints;
-        public float MaxHitPoints {
-            get { return maxHitPoints; }
-            protected set { maxHitPoints = value; }
-        }
-
-        float hitPoints;
-        public float HitPoints {
-            get { return hitPoints; }
-            protected set {
-                hitPoints = value;
-                if( hitPoints <= 0.0f ) {
-                    hitPoints = 0.0f;
-                    Die( );
-                }
-            }
-        }
-
         public Dictionary<WheelPosition, AttackStatistic> AttackStats { get; protected set; }
         public Dictionary<WheelPosition, DefenseStatistic> DefenseStats { get; protected set; }
 
-        protected ComboHandler comboHandler;
+        public ComboHandler ComboHandler { get; set; }
+        public StaminaHandler StaminaHandler { get; set; }
+        public HealthHandler HealthHandler { get; set; }
 
         protected virtual void Start( ) {
-            AttackStats = new Dictionary<WheelPosition, AttackStatistic>( );
-            DefenseStats = new Dictionary<WheelPosition, DefenseStatistic>( );
-            comboHandler = new ComboHandler( );
+            ComboHandler = new ComboHandler( );
+            StaminaHandler = new StaminaHandler( );
+            HealthHandler = new HealthHandler( );
+            HealthHandler.OnDie += Die;
             StartCoroutine( UpdateComboHandler( ) );
         }
 
@@ -72,14 +56,9 @@ namespace AwesomeGame.PlayerMgmt
             }
         }
 
-        protected virtual void Die( ) {
-            Debug.Log( gameObject.name + " has died!" );
-            Destroy( gameObject );
-        }
-
         public void DealDamage( GameObject entity, List<WheelPosition> selected ) {
             List<AttackStatistic> attackStat = new List<AttackStatistic>( AttackStats.CloneCertainValues( selected ).Values );
-            entity.GetComponent<EntityStatistic>( ).TakeDamage( selected, attackStat, comboHandler );
+            entity.GetComponent<EntityStatistic>( ).TakeDamage( selected, attackStat, ComboHandler );
         }
 
         public virtual void TakeDamage( List<WheelPosition> position, List<AttackStatistic> attack, ComboHandler comboMultiplier ) {
@@ -88,9 +67,14 @@ namespace AwesomeGame.PlayerMgmt
 
         protected IEnumerator UpdateComboHandler( ) {
             while( true ) {
-                comboHandler.UpdateCombo( 0.1f );
-                yield return new WaitForSeconds( 0.1f );
+                ComboHandler.UpdateHandler( 0.2f );
+                yield return new WaitForSeconds( 0.2f );
             }
+        }
+
+        protected virtual void Die( ) {
+            Debug.Log( gameObject.name + " has died!" );
+            Destroy( gameObject );
         }
     }
 }

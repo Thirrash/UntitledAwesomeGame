@@ -23,7 +23,6 @@ namespace AwesomeGame.PlayerMgmt
 
         IEnumerator RandomTarget( ) {
             while( true ) {
-                Debug.Log( attackPos.Count );
                 movement.MoveTowards( attackPos[(WheelPosition)UnityEngine.Random.Range( 1, 17 )].transform, betweenAttackStatesTime );
                 yield return new WaitForSeconds( betweenAttackStatesTime );
             }

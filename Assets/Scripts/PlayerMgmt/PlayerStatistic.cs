@@ -11,6 +11,8 @@ namespace AwesomeGame.PlayerMgmt
     {
         protected override void Start( ) {
             base.Start( );
+            AttackStats = new Dictionary<WheelPosition, AttackStatistic>( );
+            DefenseStats = new Dictionary<WheelPosition, DefenseStatistic>( );
 
             foreach( WheelPosition pos in (WheelPosition[])Enum.GetValues( typeof( WheelPosition ) ) ) {
                 if( pos == WheelPosition.Neutral )
