@@ -10,11 +10,13 @@ namespace AwesomeGame.PlayerMgmt
     public class HealthHandler : IHandler
     {
         public event Constants.BasicEventType OnDie;
+        public event Constants.BasicEventType OnCurrentChange = delegate { };
 
         public float CurrentHealth {
             get { return currentHealth; }
             set {
                 currentHealth = Mathf.Clamp( value, -0.1f, MaxHealth );
+                OnCurrentChange.Invoke( );
                 if( currentHealth <= 0.0f )
                     OnDie.Invoke( );
             }
@@ -34,7 +36,7 @@ namespace AwesomeGame.PlayerMgmt
 
         float currentHealth;
         float maxHealth = 100.0f;
-        float healthRestoredPerSecond = 0.0f;
+        float healthRestoredPerSecond = 0.5f;
 
         public HealthHandler( ) {
             currentHealth = maxHealth;

@@ -8,14 +8,13 @@ namespace AwesomeGame.PlayerMgmt
 {
     public class ComboHandler : IHandler
     {
-        public delegate void ModifierType( );
-        public event ModifierType OnComboUpdate = delegate { };
+        public event Constants.BasicEventType OnCurrentChange = delegate { };
 
         public float CurrentMultiplier {
             get { return currentMultiplier; }
             private set {
                 currentMultiplier = Mathf.Clamp( value, MinMultiplier, MaxMultiplier );
-                OnComboUpdate.Invoke( );
+                OnCurrentChange.Invoke( );
             }
         }
 

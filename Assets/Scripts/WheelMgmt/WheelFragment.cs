@@ -32,6 +32,9 @@ namespace AwesomeGame.WheelMgmt
         }
 
         void OnMouseEnter( ) {
+            if( isChosen )
+                return;
+
             if( wheel.IsBlocked )
                 return;
 
@@ -46,6 +49,9 @@ namespace AwesomeGame.WheelMgmt
         }
 
         void OnMouseExit( ) {
+            if( isChosen )
+                return;
+
             if( wheel.IsBlocked )
                 return;
 
@@ -54,6 +60,9 @@ namespace AwesomeGame.WheelMgmt
         }
 
         void OnMouseDown( ) {
+            if( isChosen )
+                return;
+
             if( wheel.ActivateFragment( WheelPos ) ) {
                 isChosen = true;
                 currMat.color = matColor["Selected"];

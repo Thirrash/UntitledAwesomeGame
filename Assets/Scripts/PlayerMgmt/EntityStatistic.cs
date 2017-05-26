@@ -5,6 +5,7 @@ using System.Reflection;
 using System.IO;
 using AwesomeGame.WheelMgmt;
 using UnityEngine;
+using AwesomeGame.UtilityMgmt;
 
 namespace AwesomeGame.PlayerMgmt
 {
@@ -12,7 +13,6 @@ namespace AwesomeGame.PlayerMgmt
     {
         public Dictionary<WheelPosition, AttackStatistic> AttackStats { get; protected set; }
         public Dictionary<WheelPosition, DefenseStatistic> DefenseStats { get; protected set; }
-
         public ComboHandler ComboHandler { get; set; }
         public StaminaHandler StaminaHandler { get; set; }
         public HealthHandler HealthHandler { get; set; }
@@ -58,16 +58,23 @@ namespace AwesomeGame.PlayerMgmt
 
         public void DealDamage( GameObject entity, List<WheelPosition> selected ) {
             List<AttackStatistic> attackStat = new List<AttackStatistic>( AttackStats.CloneCertainValues( selected ).Values );
-            entity.GetComponent<EntityStatistic>( ).TakeDamage( selected, attackStat, ComboHandler );
+
+            float staminaToSpend = Mathf.Min( selected.Count * StaminaHandler.StaminaUsedPerFieldInAttack, StaminaHandler.CurrentStamina );
+            float attackStaminaModifier = Mathf.Clamp( staminaToSpend / ( selected.Count * StaminaHandler.StaminaUsedPerFieldInAttack ),
+                Constants.GlobalMinimumStaminaAttackModifier, 1.0f );
+            StaminaHandler.CurrentStamina -= staminaToSpend;
+            entity.GetComponent<EntityStatistic>( ).TakeDamage( selected, attackStat, ComboHandler, attackStaminaModifier );
         }
 
-        public virtual void TakeDamage( List<WheelPosition> position, List<AttackStatistic> attack, ComboHandler comboMultiplier ) {
+        public virtual void TakeDamage( List<WheelPosition> position, List<AttackStatistic> attack, ComboHandler comboMultiplier, float staminaAttackModifier ) {
 
         }
 
         protected IEnumerator UpdateComboHandler( ) {
             while( true ) {
                 ComboHandler.UpdateHandler( 0.2f );
+                HealthHandler.UpdateHandler( 0.2f );
+                StaminaHandler.UpdateHandler( 0.2f );
                 yield return new WaitForSeconds( 0.2f );
             }
         }

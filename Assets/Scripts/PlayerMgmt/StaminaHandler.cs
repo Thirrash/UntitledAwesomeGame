@@ -9,9 +9,14 @@ namespace AwesomeGame.PlayerMgmt
 {
     public class StaminaHandler : IHandler
     {
+        public event Constants.BasicEventType OnCurrentChange = delegate { };
+
         public float CurrentStamina {
             get { return currentStamina; }
-            set { currentStamina = Mathf.Clamp( value, 0.0f, MaxStamina ); }
+            set {
+                currentStamina = Mathf.Clamp( value, 0.0f, MaxStamina );
+                OnCurrentChange.Invoke( );
+            }
         }
 
         public float MaxStamina {
@@ -20,8 +25,18 @@ namespace AwesomeGame.PlayerMgmt
         }
 
         public float StaminaRestoredPerSecond {
-            get { return StaminaRestoredPerSecond; }
-            protected set { StaminaRestoredPerSecond = value; }
+            get { return staminaRestoredPerSecond; }
+            protected set { staminaRestoredPerSecond = value; }
+        }
+
+        public float StaminaUsedPerFieldInAttack {
+            get { return ( staminaUsedPerFieldInAttack > 0.0f ) ? staminaUsedPerFieldInAttack : 0.0f; }
+            protected set { staminaUsedPerFieldInAttack = value; }
+        }
+
+        public float StaminaUsedPerFieldInDefense {
+            get { return ( staminaUsedPerFieldInDefense > 0.0f ) ? staminaUsedPerFieldInDefense : 0.0f; }
+            protected set { staminaUsedPerFieldInDefense = value; }
         }
 
         public List<StaminaModifier> Modifier { get; private set; }
@@ -29,6 +44,8 @@ namespace AwesomeGame.PlayerMgmt
         float currentStamina;
         float maxStamina = 100.0f;
         float staminaRestoredPerSecond = 5.0f;
+        float staminaUsedPerFieldInAttack = 20.0f;
+        float staminaUsedPerFieldInDefense = 10.0f;
 
         public StaminaHandler( ) {
             currentStamina = maxStamina;

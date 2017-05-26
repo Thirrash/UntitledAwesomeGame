@@ -28,5 +28,8 @@ namespace AwesomeGame.UtilityMgmt
 
         public static readonly float GlobalMinimumMaxHealth = 50.0f;
         public static readonly float GlobalMinimumMaxStamina = 50.0f;
+
+        public static readonly float GlobalMinimumStaminaAttackModifier = 0.2f;
+        public static readonly float GlobalMinimumStaminaDefenseModifier = 0.2f;
     }
 }

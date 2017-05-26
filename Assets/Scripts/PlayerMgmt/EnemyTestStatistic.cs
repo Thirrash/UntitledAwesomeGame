@@ -34,26 +34,33 @@ namespace AwesomeGame.PlayerMgmt
             Debug.Log( HealthHandler.CurrentHealth );
         }
 
-        public override void TakeDamage( List<WheelPosition> position, List<AttackStatistic> attack, ComboHandler comboMultiplier ) {
-            base.TakeDamage( position, attack, comboMultiplier );
+        public override void TakeDamage( List<WheelPosition> position, List<AttackStatistic> attack, ComboHandler comboMultiplier, float staminaAttackModifier ) {
+            base.TakeDamage( position, attack, comboMultiplier, staminaAttackModifier );
             List<WheelPosition> rolledPos = new List<WheelPosition> {
                 WheelPosition.Center, WheelPosition.InnerLeft
             };
+
+            float staminaToSpend = Mathf.Min( rolledPos.Count * StaminaHandler.StaminaUsedPerFieldInDefense, StaminaHandler.CurrentStamina );
+            float defenseStaminaModifier = Mathf.Clamp( staminaToSpend / ( rolledPos.Count * StaminaHandler.StaminaUsedPerFieldInDefense ),
+                Constants.GlobalMinimumStaminaDefenseModifier, 1.0f );
+            StaminaHandler.CurrentStamina -= staminaToSpend;
 
             float maxNonComboDamage = 0.0f;
             float actualNonComboDamage = 0.0f;
             for( int i = 0; i < position.Count; i++ ) {
                 maxNonComboDamage += attack[i].GetBoost( );
                 actualNonComboDamage += Mathf.Clamp( attack[i].GetBoost( ) -
-                    ( ( rolledPos.Count > i ) ? DefenseStats[position[i]].GetReduction( position[i], rolledPos[i] ) : DefenseStats[position[i]].GetReduction( ) ),
+                    ( ( rolledPos.Count > i ) ? 
+                        DefenseStats[position[i]].GetReduction( position[i], rolledPos[i] ) : 
+                        DefenseStats[position[i]].GetReduction( ) ) ,
                     0.0f, attack[i].GetBoost( ) );
+
                 float percentDamageDealt = actualNonComboDamage / maxNonComboDamage;
                 comboMultiplier.ChangeCombo( percentDamageDealt, true );
-                Debug.Log( "Combo = " + comboMultiplier.CurrentMultiplier );
                 ComboHandler.ChangeCombo( percentDamageDealt, false );
                 Debug.Log( "Damage = " + actualNonComboDamage + " / " + maxNonComboDamage );
-                HealthHandler.CurrentHealth -= actualNonComboDamage * comboMultiplier.CurrentMultiplier;
-                Debug.Log( "HP = " + HealthHandler.CurrentHealth );
+                HealthHandler.CurrentHealth -= actualNonComboDamage * comboMultiplier.CurrentMultiplier * 
+                    staminaAttackModifier / defenseStaminaModifier;
             }
         }
     }

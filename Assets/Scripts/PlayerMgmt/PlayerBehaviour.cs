@@ -30,19 +30,33 @@ namespace AwesomeGame.PlayerMgmt
             stat = GetComponent<PlayerStatistic>( );
         }
 
+        void Update( ) {
+            RaycastHit hit;
+            if( !Physics.Raycast( transform.position, transform.forward, out hit, 25.0f, 1 << Constants.EnemyLayer ) ) {
+                if( stat.CurrentTarget != null )
+                    stat.CurrentTarget = null;
+                return;
+            }
+
+            stat.CurrentTarget = hit.collider.gameObject.GetComponent<EntityStatistic>( );
+        }
+
         protected override void InitAttack( ) {
             if( isAttacking )
                 return;
 
-            RaycastHit hit;
-            if( !Physics.Raycast( transform.position, transform.forward, out hit, maxAttackRange, 1 << Constants.EnemyLayer ) )
+            if( stat.CurrentTarget == null )
                 return;
 
+            if( Vector2.Distance( transform.position, stat.CurrentTarget.transform.position ) > maxAttackRange )
+                return;
+
+            EntityStatistic lastTarget = stat.CurrentTarget;
             isAttacking = true;
             wheel.ToggleActivation( true );
             CursorLock.Instance.UnlockCursor( );
             StartCoroutine( HandleSlowMotion( ) );
-            StartCoroutine( HandleCooldown( ( ) => hit.collider.gameObject, ( ) => selected ) );
+            StartCoroutine( HandleCooldown( ( ) => lastTarget.gameObject, ( ) => selected ) );
         }
 
         protected override void InitDefense( ) {
