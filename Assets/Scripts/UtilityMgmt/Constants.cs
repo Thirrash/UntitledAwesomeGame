@@ -9,6 +9,7 @@ namespace AwesomeGame.UtilityMgmt
     {
         public delegate void BasicEventType( );
 
+        public static readonly int PlayerLayer = 9;
         public static readonly int EnemyLayer = 10;
 
         public static readonly string MoveHorizontalInput = "Horizontal";

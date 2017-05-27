@@ -15,6 +15,9 @@ namespace AwesomeGame.PlayerMgmt
         float attackTime = 3.0f;
 
         [SerializeField]
+        float defenseTime = 3.0f;
+
+        [SerializeField]
         float timeToReachSlowMotion = 1.0f;
 
         [SerializeField]
@@ -38,11 +41,11 @@ namespace AwesomeGame.PlayerMgmt
                 return;
             }
 
-            stat.CurrentTarget = hit.collider.gameObject.GetComponent<EntityStatistic>( );
+            stat.CurrentTarget = hit.collider.gameObject;
         }
 
-        protected override void InitAttack( ) {
-            if( isAttacking )
+        public override void InitAttack( ) {
+            if( IsAttacking || IsAttacked )
                 return;
 
             if( stat.CurrentTarget == null )
@@ -51,19 +54,28 @@ namespace AwesomeGame.PlayerMgmt
             if( Vector2.Distance( transform.position, stat.CurrentTarget.transform.position ) > maxAttackRange )
                 return;
 
-            EntityStatistic lastTarget = stat.CurrentTarget;
-            isAttacking = true;
+            if( stat.CurrentTarget.GetComponent<EntityBehaviour>( ).IsAttacked )
+                return;
+
+            GameObject lastTarget = stat.CurrentTarget;
+            IsAttacking = true;
             wheel.ToggleActivation( true );
+            wheel.CurrentActionText.text = "Attack mode";
             CursorLock.Instance.UnlockCursor( );
-            StartCoroutine( HandleSlowMotion( ) );
-            StartCoroutine( HandleCooldown( ( ) => lastTarget.gameObject, ( ) => selected ) );
+            StartCoroutine( HandleSlowMotionAttack( ) );
+            StartCoroutine( HandleCooldownAttack( ( ) => lastTarget ) );
         }
 
-        protected override void InitDefense( ) {
-            throw new NotImplementedException( );
+        public override void InitDefense( List<WheelPosition> attackPosition, List<AttackStatistic> attack, ComboHandler comboMultiplier, float staminaAttackModifier ) {
+            IsAttacked = true;
+            wheel.ToggleActivation( true );
+            wheel.CurrentActionText.text = "Defense mode";
+            CursorLock.Instance.UnlockCursor( );
+            StartCoroutine( HandleSlowMotionDefense( ) );
+            StartCoroutine( HandleCooldownDefense( attackPosition, attack, comboMultiplier, staminaAttackModifier ) );
         }
 
-        IEnumerator HandleSlowMotion( ) {
+        IEnumerator HandleSlowMotionAttack( ) {
             for( float i = 1.0f; i > 0.01f; i -= 0.1f ) {
                 Time.timeScale = i;
                 yield return new WaitForSecondsRealtime( timeToReachSlowMotion / 10.0f );
@@ -77,7 +89,7 @@ namespace AwesomeGame.PlayerMgmt
             }
         }
 
-        IEnumerator HandleCooldown( Func<GameObject> hitObjReference, Func<List<WheelPosition>> selectedListReference ) {
+        IEnumerator HandleCooldownAttack( Func<GameObject> lastTargetReference ) {
             yield return new WaitForSecondsRealtime( attackTime );
 
             wheel.Finalize( false );
@@ -85,10 +97,38 @@ namespace AwesomeGame.PlayerMgmt
             CursorLock.Instance.LockCursor( );
             wheel.ToggleActivation( false );
 
-            stat.DealDamage( hitObjReference( ), selectedListReference( ) );
+            stat.DealDamage( lastTargetReference( ), selected );
 
             yield return new WaitForSecondsRealtime( timeBetweenAttacks );
-            isAttacking = false;
+            IsAttacking = false;
+        }
+
+        IEnumerator HandleSlowMotionDefense( ) {
+            for( float i = 1.0f; i > 0.01f; i -= 0.1f ) {
+                Time.timeScale = i;
+                yield return new WaitForSecondsRealtime( timeToReachSlowMotion / 10.0f );
+            }
+
+            yield return new WaitForSecondsRealtime( defenseTime - 2.0f * timeToReachSlowMotion );
+
+            for( float i = 0.1f; i < 1.01f; i += 0.1f ) {
+                Time.timeScale = i;
+                yield return new WaitForSecondsRealtime( timeToReachSlowMotion / 10.0f );
+            }
+        }
+
+        IEnumerator HandleCooldownDefense( List<WheelPosition> attackPosition, List<AttackStatistic> attack, ComboHandler comboMultiplier, float staminaAttackModifier ) {
+            yield return new WaitForSecondsRealtime( defenseTime );
+
+            wheel.Finalize( false );
+            StartCoroutine( Attack( ) );
+            CursorLock.Instance.LockCursor( );
+            wheel.ToggleActivation( false );
+
+            stat.TakeDamage( attackPosition, attack, selected, comboMultiplier, staminaAttackModifier );
+
+            yield return new WaitForSeconds( timeBetweenAttacks );
+            IsAttacked = false;
         }
 
         IEnumerator Attack( ) {

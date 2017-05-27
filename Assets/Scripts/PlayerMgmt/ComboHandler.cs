@@ -96,7 +96,6 @@ namespace AwesomeGame.PlayerMgmt
                 Math.Abs( ComboGenerationForDefense.x ) + Math.Abs( ComboGenerationForDefense.y );
             CurrentMultiplier += ( isForAttack ) ? ComboGenerationForAttack.x + generationRange * percentDamageDealt :
                 ComboGenerationForDefense.x + generationRange * percentDamageDealt;
-            Debug.Log( percentDamageDealt + " " + ( Math.Abs( ComboGenerationForAttack.x ) + generationRange * percentDamageDealt ) );
         }
 
         public void AddModifier( ComboModifier modifier ) {

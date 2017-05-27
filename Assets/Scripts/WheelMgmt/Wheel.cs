@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using AwesomeGame.PlayerMgmt;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace AwesomeGame.WheelMgmt
 {
     public class Wheel : WheelBase
     {
         public PlayerBehaviour behaviour;
+        public Text CurrentActionText;
 
         protected override void Start( ) {
             base.Start( );

@@ -18,7 +18,6 @@ namespace AwesomeGame.PlayerMgmt
         static EnemyTestStatistic( ) {
             attackStatsBase = new Dictionary<WheelPosition, AttackStatistic>( );
             defenseStatsBase = new Dictionary<WheelPosition, DefenseStatistic>( );
-            Debug.Log( "Init EnemyTest" );
             string path = Constants.StatsBasePath + "EnemyTest/";
             InitBaseStats( attackStatsBase, defenseStatsBase, path );
         }
@@ -26,42 +25,14 @@ namespace AwesomeGame.PlayerMgmt
         public EnemyTestStatistic( ) {
             AttackStats = attackStatsBase.CloneDictionaryCloningValues( );
             DefenseStats = defenseStatsBase.CloneDictionaryCloningValues( );
-            Debug.Log( "Copied count = " + DefenseStats.Count );
         }
 
         protected override void Start( ) {
             base.Start( );
-            Debug.Log( HealthHandler.CurrentHealth );
         }
 
-        public override void TakeDamage( List<WheelPosition> position, List<AttackStatistic> attack, ComboHandler comboMultiplier, float staminaAttackModifier ) {
-            base.TakeDamage( position, attack, comboMultiplier, staminaAttackModifier );
-            List<WheelPosition> rolledPos = new List<WheelPosition> {
-                WheelPosition.Center, WheelPosition.InnerLeft
-            };
-
-            float staminaToSpend = Mathf.Min( rolledPos.Count * StaminaHandler.StaminaUsedPerFieldInDefense, StaminaHandler.CurrentStamina );
-            float defenseStaminaModifier = Mathf.Clamp( staminaToSpend / ( rolledPos.Count * StaminaHandler.StaminaUsedPerFieldInDefense ),
-                Constants.GlobalMinimumStaminaDefenseModifier, 1.0f );
-            StaminaHandler.CurrentStamina -= staminaToSpend;
-
-            float maxNonComboDamage = 0.0f;
-            float actualNonComboDamage = 0.0f;
-            for( int i = 0; i < position.Count; i++ ) {
-                maxNonComboDamage += attack[i].GetBoost( );
-                actualNonComboDamage += Mathf.Clamp( attack[i].GetBoost( ) -
-                    ( ( rolledPos.Count > i ) ? 
-                        DefenseStats[position[i]].GetReduction( position[i], rolledPos[i] ) : 
-                        DefenseStats[position[i]].GetReduction( ) ) ,
-                    0.0f, attack[i].GetBoost( ) );
-
-                float percentDamageDealt = actualNonComboDamage / maxNonComboDamage;
-                comboMultiplier.ChangeCombo( percentDamageDealt, true );
-                ComboHandler.ChangeCombo( percentDamageDealt, false );
-                Debug.Log( "Damage = " + actualNonComboDamage + " / " + maxNonComboDamage );
-                HealthHandler.CurrentHealth -= actualNonComboDamage * comboMultiplier.CurrentMultiplier * 
-                    staminaAttackModifier / defenseStaminaModifier;
-            }
+        public override void TakeDamage( List<WheelPosition> attackPosition, List<AttackStatistic> attack, List<WheelPosition> defensePosition, ComboHandler comboMultiplier, float staminaAttackModifier ) {
+            base.TakeDamage( attackPosition, attack, defensePosition, comboMultiplier, staminaAttackModifier );
         }
     }
 }

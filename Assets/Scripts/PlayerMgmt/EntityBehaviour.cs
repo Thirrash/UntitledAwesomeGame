@@ -13,7 +13,8 @@ namespace AwesomeGame.PlayerMgmt
         protected List<WheelPosition> selected = new List<WheelPosition>( );
         protected IKControl ikControl;
         protected MoveObject movement;
-        protected bool isAttacking;
+        public bool IsAttacking = false;
+        public bool IsAttacked = false;
 
         [SerializeField]
         protected float fromAndToNeutralStateTime = 0.4f;
@@ -42,8 +43,8 @@ namespace AwesomeGame.PlayerMgmt
             selected = new List<WheelPosition>( newSelected );
         }
 
-        protected abstract void InitAttack( );
-        protected abstract void InitDefense( );
+        public abstract void InitAttack( );
+        public abstract void InitDefense( List<WheelPosition> attackPosition, List<AttackStatistic> attack, ComboHandler comboMultiplier, float staminaAttackModifier );
     }
 }
 

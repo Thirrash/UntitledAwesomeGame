@@ -11,11 +11,23 @@ namespace AwesomeGame.PlayerMgmt
 {
     public abstract class EntityStatistic : MonoBehaviour
     {
+        public event Constants.BasicEventType OnTargetChange = delegate { };
+
+        public GameObject CurrentTarget {
+            get { return currentTarget; }
+            set {
+                currentTarget = value;
+                OnTargetChange.Invoke( );
+            }
+        }
+
         public Dictionary<WheelPosition, AttackStatistic> AttackStats { get; protected set; }
         public Dictionary<WheelPosition, DefenseStatistic> DefenseStats { get; protected set; }
         public ComboHandler ComboHandler { get; set; }
         public StaminaHandler StaminaHandler { get; set; }
         public HealthHandler HealthHandler { get; set; }
+
+        protected GameObject currentTarget;
 
         protected virtual void Start( ) {
             ComboHandler = new ComboHandler( );
@@ -32,7 +44,6 @@ namespace AwesomeGame.PlayerMgmt
                 if( pos == WheelPosition.Neutral )
                     continue;
 
-                Debug.Log( pos.ToString( ) + baseDefense.Count );
                 string json = "";
                 using( FileStream stream = new FileStream( path + "_attack_" + pos.ToString( ) + ".awg", FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read ) )
                 using( StreamReader reader = new StreamReader( stream ) )
@@ -63,11 +74,34 @@ namespace AwesomeGame.PlayerMgmt
             float attackStaminaModifier = Mathf.Clamp( staminaToSpend / ( selected.Count * StaminaHandler.StaminaUsedPerFieldInAttack ),
                 Constants.GlobalMinimumStaminaAttackModifier, 1.0f );
             StaminaHandler.CurrentStamina -= staminaToSpend;
-            entity.GetComponent<EntityStatistic>( ).TakeDamage( selected, attackStat, ComboHandler, attackStaminaModifier );
+            entity.GetComponent<EntityBehaviour>( ).InitDefense( selected, attackStat, ComboHandler, attackStaminaModifier );
         }
 
-        public virtual void TakeDamage( List<WheelPosition> position, List<AttackStatistic> attack, ComboHandler comboMultiplier, float staminaAttackModifier ) {
+        public virtual void TakeDamage( List<WheelPosition> attackPosition, List<AttackStatistic> attack, List<WheelPosition> defensePosition, ComboHandler comboMultiplier, float staminaAttackModifier ) {
+            float staminaToSpend = Mathf.Min( defensePosition.Count * StaminaHandler.StaminaUsedPerFieldInDefense, StaminaHandler.CurrentStamina );
+            float defenseStaminaModifier = ( defensePosition.Count > 0 ) ?
+                Mathf.Clamp( staminaToSpend / ( defensePosition.Count * StaminaHandler.StaminaUsedPerFieldInDefense ),
+                    Constants.GlobalMinimumStaminaDefenseModifier, 1.0f ) :
+                Constants.GlobalMinimumStaminaDefenseModifier;
+            StaminaHandler.CurrentStamina -= staminaToSpend;
 
+            float maxNonComboDamage = 0.0f;
+            float actualNonComboDamage = 0.0f;
+            for( int i = 0; i < attackPosition.Count; i++ ) {
+                maxNonComboDamage += attack[i].GetBoost( );
+                actualNonComboDamage += Mathf.Clamp( attack[i].GetBoost( ) -
+                    ( ( defensePosition.Count > i ) ?
+                        DefenseStats[attackPosition[i]].GetReduction( attackPosition[i], defensePosition[i] ) :
+                        DefenseStats[attackPosition[i]].GetReduction( ) ),
+                    0.0f, attack[i].GetBoost( ) );
+
+                float percentDamageDealt = actualNonComboDamage / maxNonComboDamage;
+                comboMultiplier.ChangeCombo( percentDamageDealt, true );
+                ComboHandler.ChangeCombo( percentDamageDealt, false );
+                Debug.Log( "Damage = " + actualNonComboDamage + " / " + maxNonComboDamage );
+                HealthHandler.CurrentHealth -= actualNonComboDamage * comboMultiplier.CurrentMultiplier *
+                    staminaAttackModifier / defenseStaminaModifier;
+            }
         }
 
         protected IEnumerator UpdateComboHandler( ) {

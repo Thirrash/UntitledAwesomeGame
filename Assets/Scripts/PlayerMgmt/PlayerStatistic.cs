@@ -10,18 +10,6 @@ namespace AwesomeGame.PlayerMgmt
 {
     public class PlayerStatistic : EntityStatistic
     {
-        public event Constants.BasicEventType OnTargetChange = delegate { };
-
-        public EntityStatistic CurrentTarget {
-            get { return currentTarget; }
-            set {
-                currentTarget = value;
-                OnTargetChange.Invoke( );
-            }
-        }
-
-        EntityStatistic currentTarget;
-
         protected override void Start( ) {
             base.Start( );
             AttackStats = new Dictionary<WheelPosition, AttackStatistic>( );

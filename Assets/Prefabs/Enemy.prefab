@@ -1309,7 +1309,7 @@ GameObject:
   - component: {fileID: 54879317203990782}
   - component: {fileID: 114560909467516822}
   - component: {fileID: 114737694229191778}
-  - component: {fileID: 114214015756581444}
+  - component: {fileID: 114577396637401352}
   m_Layer: 10
   m_Name: Enemy
   m_TagString: Enemy
@@ -3506,22 +3506,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 768911515e86f0344b4b43ba97d5f33a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114214015756581444
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1936006479930436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 160d8a972a338604abee555ff3d069d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxAllowedMoves: 3
-  fromAndToNeutralStateTime: 0.4
-  betweenAttackStatesTime: 0.1
-  maxAttackRange: 2
-  timeBetweenAttacks: 1
 --- !u!114 &114328797814016246
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3591,6 +3575,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c669a6e6b148c6438f2e6053da97856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114577396637401352
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1936006479930436}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28e56af685bb72b41af2e4a46ae89aa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxAllowedMoves: 3
+  IsAttacking: 0
+  IsAttacked: 0
+  fromAndToNeutralStateTime: 0.4
+  betweenAttackStatesTime: 0.1
+  maxAttackRange: 2
+  timeBetweenAttacks: 1
 --- !u!114 &114642018211484682
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3624,7 +3626,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0753833a9240fa145acb0c8baa004c39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHitPoints: 0
 --- !u!114 &114771025807783266
 MonoBehaviour:
   m_ObjectHideFlags: 1

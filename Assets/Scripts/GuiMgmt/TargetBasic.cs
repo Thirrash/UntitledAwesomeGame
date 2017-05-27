@@ -13,8 +13,8 @@ namespace AwesomeGame.GuiMgmt
             StartCoroutine( UpdateTargetStats( ) );
         }
 
-        public void ChangeTarget( EntityStatistic newStat ) {
-            stats = newStat;
+        public void ChangeTarget( GameObject newTarget ) {
+            stats = newTarget.GetComponent<EntityStatistic>( );
             OnHealthChange( );
             OnStaminaChange( );
             OnComboChange( );
