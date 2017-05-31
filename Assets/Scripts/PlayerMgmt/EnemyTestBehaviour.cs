@@ -35,24 +35,46 @@ namespace AwesomeGame.PlayerMgmt
             stat.DealDamage( stat.CurrentTarget, rolledPos );
         }
 
-        public override void InitDefense( List<WheelPosition> attackPosition, List<AttackStatistic> attack, ComboHandler comboMultiplier, float staminaAttackModifier ) {
+        public override void InitDefense( List<WheelPosition> attackPosition, 
+                                          List<AttackStatistic> attack, 
+                                          ComboHandler comboMultiplier, 
+                                          float staminaAttackModifier,
+                                          EntityBehaviour attackerBeahviour) {
             List<WheelPosition> rolledPos = new List<WheelPosition> {
                 WheelPosition.OuterTop, WheelPosition.OuterBottom
             };
 
             StartCoroutine( AttackAnim( ( ) => rolledPos ) );
             stat.TakeDamage( attackPosition, attack, rolledPos, comboMultiplier, staminaAttackModifier );
+            JumpAway( );
+            attackerBeahviour.JumpAway( );
         }
 
         IEnumerator RandomTarget( ) {
+            Coroutine activeRoutine = null;
             while( true ) {
                 Collider[] playerInRangeCol = Physics.OverlapSphere( transform.position, maxAttackRange, 1 << Constants.PlayerLayer );
                 if( playerInRangeCol.Length > 0 ) {
+                    if( playerInRangeCol[0].GetComponent<PlayerBehaviour>( ).IsAttacking ||
+                        playerInRangeCol[0].GetComponent<PlayerBehaviour>( ).IsAttacked ) {
+                        yield return new WaitForSecondsRealtime( 3.0f );
+                        continue;
+                    }
+
                     stat.CurrentTarget = playerInRangeCol[0].gameObject;
                     InitAttack( );
-                }
+                    yield return new WaitForSeconds( 5.0f );
+                } else {
+                    playerInRangeCol = Physics.OverlapSphere( transform.position, 50.0f, 1 << Constants.PlayerLayer );
+                    if( playerInRangeCol.Length == 0 ) {
+                        yield return new WaitForSeconds( 15.0f );
+                        continue;
+                    }
 
-                yield return new WaitForSeconds( 5.0f );
+                    if( activeRoutine != null ) StopCoroutine( activeRoutine );
+                    activeRoutine = StartCoroutine( FollowPlayer( ( ) => playerInRangeCol[0] ) );
+                    yield return new WaitForSeconds( 5.0f );
+                }
             }
         }
 
@@ -70,6 +92,16 @@ namespace AwesomeGame.PlayerMgmt
 
             movement.MoveTowards( attackPos[WheelPosition.Neutral].transform, fromAndToNeutralStateTime / Time.timeScale );
             yield return new WaitUntil( ( ) => movement.HasFinishedMove );
+        }
+
+        IEnumerator FollowPlayer( Func<Collider> playerColliderReference ) {
+            Transform playerTransform = playerColliderReference( ).transform;
+            Rigidbody rigid = GetComponent<Rigidbody>( );
+            while( Vector3.Distance( transform.position, playerTransform.position ) > 1.2f ) {
+                rigid.MovePosition( Vector3.MoveTowards( transform.position, playerTransform.position, 1.0f * Time.deltaTime ) );
+                transform.LookAt( playerTransform );
+                yield return null;
+            }
         }
     }
 }

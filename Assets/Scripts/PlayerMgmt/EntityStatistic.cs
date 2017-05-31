@@ -74,7 +74,7 @@ namespace AwesomeGame.PlayerMgmt
             float attackStaminaModifier = Mathf.Clamp( staminaToSpend / ( selected.Count * StaminaHandler.StaminaUsedPerFieldInAttack ),
                 Constants.GlobalMinimumStaminaAttackModifier, 1.0f );
             StaminaHandler.CurrentStamina -= staminaToSpend;
-            entity.GetComponent<EntityBehaviour>( ).InitDefense( selected, attackStat, ComboHandler, attackStaminaModifier );
+            entity.GetComponent<EntityBehaviour>( ).InitDefense( selected, attackStat, ComboHandler, attackStaminaModifier, GetComponent<EntityBehaviour>( ) );
         }
 
         public virtual void TakeDamage( List<WheelPosition> attackPosition, List<AttackStatistic> attack, List<WheelPosition> defensePosition, ComboHandler comboMultiplier, float staminaAttackModifier ) {

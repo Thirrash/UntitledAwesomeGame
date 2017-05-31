@@ -33,7 +33,7 @@ namespace AwesomeGame.PlayerMgmt
             stat = GetComponent<PlayerStatistic>( );
         }
 
-        void Update( ) {
+        protected override void Update( ) {
             RaycastHit hit;
             if( !Physics.Raycast( transform.position, transform.forward, out hit, 25.0f, 1 << Constants.EnemyLayer ) ) {
                 if( stat.CurrentTarget != null )
@@ -66,13 +66,15 @@ namespace AwesomeGame.PlayerMgmt
             StartCoroutine( HandleCooldownAttack( ( ) => lastTarget ) );
         }
 
-        public override void InitDefense( List<WheelPosition> attackPosition, List<AttackStatistic> attack, ComboHandler comboMultiplier, float staminaAttackModifier ) {
+        public override void InitDefense( List<WheelPosition> attackPosition, 
+                                          List<AttackStatistic> attack, 
+                                          ComboHandler comboMultiplier,
+                                          float staminaAttackModifier,
+                                          EntityBehaviour attackerBehaviour) {
             IsAttacked = true;
-            wheel.ToggleActivation( true );
-            wheel.CurrentActionText.text = "Defense mode";
-            CursorLock.Instance.UnlockCursor( );
+            
             StartCoroutine( HandleSlowMotionDefense( ) );
-            StartCoroutine( HandleCooldownDefense( attackPosition, attack, comboMultiplier, staminaAttackModifier ) );
+            StartCoroutine( HandleCooldownDefense( attackPosition, attack, comboMultiplier, staminaAttackModifier, attackerBehaviour ) );
         }
 
         IEnumerator HandleSlowMotionAttack( ) {
@@ -109,6 +111,9 @@ namespace AwesomeGame.PlayerMgmt
                 yield return new WaitForSecondsRealtime( timeToReachSlowMotion / 10.0f );
             }
 
+            wheel.ToggleActivation( true );
+            wheel.CurrentActionText.text = "Defense mode";
+            CursorLock.Instance.UnlockCursor( );
             yield return new WaitForSecondsRealtime( defenseTime - 2.0f * timeToReachSlowMotion );
 
             for( float i = 0.1f; i < 1.01f; i += 0.1f ) {
@@ -117,7 +122,11 @@ namespace AwesomeGame.PlayerMgmt
             }
         }
 
-        IEnumerator HandleCooldownDefense( List<WheelPosition> attackPosition, List<AttackStatistic> attack, ComboHandler comboMultiplier, float staminaAttackModifier ) {
+        IEnumerator HandleCooldownDefense( List<WheelPosition> attackPosition, 
+                                           List<AttackStatistic> attack, 
+                                           ComboHandler comboMultiplier, 
+                                           float staminaAttackModifier,
+                                           EntityBehaviour attackerBehaviour ) {
             yield return new WaitForSecondsRealtime( defenseTime );
 
             wheel.Finalize( false );
@@ -126,6 +135,8 @@ namespace AwesomeGame.PlayerMgmt
             wheel.ToggleActivation( false );
 
             stat.TakeDamage( attackPosition, attack, selected, comboMultiplier, staminaAttackModifier );
+            JumpAway( );
+            attackerBehaviour.JumpAway( );
 
             yield return new WaitForSeconds( timeBetweenAttacks );
             IsAttacked = false;

@@ -43,8 +43,26 @@ namespace AwesomeGame.PlayerMgmt
             selected = new List<WheelPosition>( newSelected );
         }
 
+        protected virtual void Update( ) {
+
+        }
+
+        public void JumpAway( ) {
+            GetComponent<Rigidbody>( ).AddRelativeForce( Vector3.up * 5.0f, ForceMode.Impulse );
+            StartCoroutine( JumpForward( ) );
+        }
+
         public abstract void InitAttack( );
-        public abstract void InitDefense( List<WheelPosition> attackPosition, List<AttackStatistic> attack, ComboHandler comboMultiplier, float staminaAttackModifier );
+        public abstract void InitDefense( List<WheelPosition> attackPosition, 
+                                          List<AttackStatistic> attack, 
+                                          ComboHandler comboMultiplier, 
+                                          float staminaAttackModifier,
+                                          EntityBehaviour attackerBehaviour );
+
+        IEnumerator JumpForward( ) {
+            yield return new WaitForSeconds( 0.1f );
+            GetComponent<Rigidbody>( ).AddRelativeForce( -Vector3.forward * 50.0f, ForceMode.Impulse );
+        }
     }
 }
 

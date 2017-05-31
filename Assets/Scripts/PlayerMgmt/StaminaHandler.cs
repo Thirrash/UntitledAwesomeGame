@@ -43,7 +43,7 @@ namespace AwesomeGame.PlayerMgmt
 
         float currentStamina;
         float maxStamina = 100.0f;
-        float staminaRestoredPerSecond = 5.0f;
+        float staminaRestoredPerSecond = 10.0f;
         float staminaUsedPerFieldInAttack = 20.0f;
         float staminaUsedPerFieldInDefense = 10.0f;
 
