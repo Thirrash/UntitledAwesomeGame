@@ -13,6 +13,9 @@ namespace AwesomeGame.EditorMgmt
         public bool IsDefense = true;
         public Text text;
 
+        [SerializeField]
+        WheelEditor wheel;
+
         StatisticCreation statCreation;
         FieldInfo fieldInfo;
 
@@ -20,12 +23,10 @@ namespace AwesomeGame.EditorMgmt
             statCreation = StatisticCreation.Instance;
             fieldInfo = ( typeof( DefenseStatistic ) ).GetField( gameObject.name, BindingFlags.Public | BindingFlags.Instance );
             Debug.Log( fieldInfo.Name );
-            ( (WheelEditor)WheelEditor.Instance ).FieldChanger.Add( this );
+            wheel.FieldChanger.Add( this );
         }
 
         public void UpdateText( ) {
-            WheelEditor wheel = (WheelEditor)WheelEditor.Instance;
-
             if( wheel.Selected.Count == 0 ) {
                 text.text = " ";
                 return;

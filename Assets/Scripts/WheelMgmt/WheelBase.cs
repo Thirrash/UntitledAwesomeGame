@@ -6,7 +6,6 @@ namespace AwesomeGame.WheelMgmt
 {
     public abstract class WheelBase : MonoBehaviour
     {
-        public static WheelBase Instance { get; protected set; }
         public bool IsBlocked { get; protected set; }
         public bool IsClicked { get; protected set; }
 
@@ -17,11 +16,6 @@ namespace AwesomeGame.WheelMgmt
         public List<WheelPosition> Selected { get; protected set; }
 
         protected virtual void Start( ) {
-            if( Instance != null )
-                Destroy( this );
-            else
-                Instance = this;
-
             fragments = new Dictionary<WheelPosition, WheelFragment>( );
             Selected = new List<WheelPosition>( );
         }

@@ -20,6 +20,9 @@ namespace AwesomeGame.EditorMgmt
         public Dictionary<WheelPosition, AttackStatistic> AttackStats;
         public Dictionary<WheelPosition, DefenseStatistic> DefenseStats;
 
+        [SerializeField]
+        WheelEditor wheel;
+
         void Start( ) {
             if( Instance == null )
                 Instance = this;
@@ -63,7 +66,7 @@ namespace AwesomeGame.EditorMgmt
             if( !Directory.Exists( dirPath ) )
                 Directory.CreateDirectory( dirPath );
 
-            foreach( WheelPosition pos in WheelEditor.Instance.Selected ) {
+            foreach( WheelPosition pos in wheel.Selected ) {
                 string json = "";
                 if( IsDefenseMode ) {
                     json = JsonUtility.ToJson( DefenseStats[pos] );
@@ -82,7 +85,7 @@ namespace AwesomeGame.EditorMgmt
         public void ChangeDefenseBaseDmg( string val ) {
             float value = float.Parse( val );
             value = Mathf.Clamp( value, 0.0f, 1.0f );
-            foreach( WheelPosition pos in WheelEditor.Instance.Selected )
+            foreach( WheelPosition pos in wheel.Selected )
                 DefenseStats[pos].BaseDmgReduction = value;
         }
     }

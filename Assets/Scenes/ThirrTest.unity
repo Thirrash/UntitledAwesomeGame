@@ -187,7 +187,6 @@ GameObject:
   - component: {fileID: 110524056}
   - component: {fileID: 110524057}
   - component: {fileID: 110524054}
-  - component: {fileID: 110524058}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -243,20 +242,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c2a0e455e4893c439824a1d32823d49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &110524058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 110524053}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6a4fb909bbba184caa095aefdf6fbed, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wheelObj: {fileID: 676978131}
-  behaviour: {fileID: 1724877775}
-  CurrentActionText: {fileID: 1279870757}
 --- !u!1 &263292018
 GameObject:
   m_ObjectHideFlags: 0
@@ -1235,11 +1220,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 54235574437658722, guid: 5e301bf13f6eff243b59692d6353cb0c,
+    - target: {fileID: 114083082715230324, guid: 5e301bf13f6eff243b59692d6353cb0c,
         type: 2}
-      propertyPath: m_Drag
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: wheelObj
+      value: 
+      objectReference: {fileID: 676978131}
+    - target: {fileID: 114083082715230324, guid: 5e301bf13f6eff243b59692d6353cb0c,
+        type: 2}
+      propertyPath: CurrentActionText
+      value: 
+      objectReference: {fileID: 1279870757}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e301bf13f6eff243b59692d6353cb0c, type: 2}
   m_IsPrefabParent: 0
@@ -1384,6 +1374,18 @@ GameObject:
   m_PrefabParentObject: {fileID: 1434865439708274, guid: e804e19a90a7c2049a52a1274b98bfeb,
     type: 2}
   m_PrefabInternal: {fileID: 1649121197}
+--- !u!114 &676978132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 676978131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 503fd451bcd81ac4fabea8cf589e4a78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Wheel: {fileID: 1724877769}
 --- !u!1 &900218574
 GameObject:
   m_ObjectHideFlags: 0
@@ -2383,12 +2385,12 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 618379481}
   m_Script: {fileID: 11500000, guid: a2e02b2701a12254da3d3c69680b62e0, type: 3}
---- !u!114 &1724877775 stripped
+--- !u!114 &1724877769 stripped
 MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114571949778786268, guid: 5e301bf13f6eff243b59692d6353cb0c,
+  m_PrefabParentObject: {fileID: 114083082715230324, guid: 5e301bf13f6eff243b59692d6353cb0c,
     type: 2}
   m_PrefabInternal: {fileID: 618379481}
-  m_Script: {fileID: 11500000, guid: 1048bbd50c001784888c35c0deabc3ee, type: 3}
+  m_Script: {fileID: 11500000, guid: d6a4fb909bbba184caa095aefdf6fbed, type: 3}
 --- !u!1 &1767210962
 GameObject:
   m_ObjectHideFlags: 0

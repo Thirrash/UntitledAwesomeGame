@@ -437,6 +437,7 @@ GameObject:
   - component: {fileID: 114862505267207552}
   - component: {fileID: 114005317181766082}
   - component: {fileID: 114571949778786268}
+  - component: {fileID: 114083082715230324}
   m_Layer: 9
   m_Name: Postac
   m_TagString: Player
@@ -1485,7 +1486,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1335671310687842}
   m_LocalRotation: {x: -0, y: 0.7552155, z: -0, w: 0.65547657}
-  m_LocalPosition: {x: 4.62, y: 0.110000014, z: 0.09069017}
+  m_LocalPosition: {x: 2.47, y: 0.110000014, z: 0.4}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children:
   - {fileID: 4134728419943710}
@@ -3463,6 +3464,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c669a6e6b148c6438f2e6053da97856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114083082715230324
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1335671310687842}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6a4fb909bbba184caa095aefdf6fbed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wheelObj: {fileID: 0}
+  behaviour: {fileID: 114571949778786268}
+  CurrentActionText: {fileID: 0}
 --- !u!114 &114100318027158276
 MonoBehaviour:
   m_ObjectHideFlags: 1

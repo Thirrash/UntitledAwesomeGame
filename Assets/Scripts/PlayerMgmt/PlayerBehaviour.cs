@@ -29,8 +29,8 @@ namespace AwesomeGame.PlayerMgmt
         protected override void Start( ) {
             base.Start( );
             InputTrigger.Instance.MouseLeftButton += InitAttack;
-            wheel = (Wheel)Wheel.Instance;
             stat = GetComponent<PlayerStatistic>( );
+            wheel = GetComponent<Wheel>( );
         }
 
         protected override void Update( ) {

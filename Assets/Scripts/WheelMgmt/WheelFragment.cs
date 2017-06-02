@@ -11,7 +11,7 @@ namespace AwesomeGame.WheelMgmt
         public WheelPosition WheelPos { get; private set; }
 
         bool isChosen = false;
-        WheelBase wheel;
+        Wheel wheel;
         Material currMat;
         Dictionary<string, Color> matColor = new Dictionary<string, Color> {
             { "Neutral", new Color( 1.0f, 1.0f, 1.0f, 0.2f ) },
@@ -21,7 +21,7 @@ namespace AwesomeGame.WheelMgmt
 
         void Start( ) {
             WheelPos = (WheelPosition)Enum.Parse( typeof( WheelPosition ), gameObject.name );
-            wheel = WheelBase.Instance;
+            wheel = GetComponentInParent<WheelLocator>( ).Wheel;
             wheel.AddFragment( WheelPos, this );
             currMat = GetComponent<MeshRenderer>( ).material;
             currMat.color = matColor["Neutral"];
