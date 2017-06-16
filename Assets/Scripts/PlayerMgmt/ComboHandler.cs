@@ -95,7 +95,7 @@ namespace AwesomeGame.PlayerMgmt
             float generationRange = ( isForAttack ) ? Math.Abs( ComboGenerationForAttack.x ) + Math.Abs( ComboGenerationForAttack.y ) :
                 Math.Abs( ComboGenerationForDefense.x ) + Math.Abs( ComboGenerationForDefense.y );
             CurrentMultiplier += ( isForAttack ) ? ComboGenerationForAttack.x + generationRange * percentDamageDealt :
-                ComboGenerationForDefense.x + generationRange * percentDamageDealt;
+                ComboGenerationForDefense.x + generationRange * ( 1.0f - percentDamageDealt );
         }
 
         public void AddModifier( ComboModifier modifier ) {

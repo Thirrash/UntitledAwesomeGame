@@ -23,7 +23,7 @@ namespace AwesomeGame.PlayerMgmt
         }
 
         public float GetReduction( ) {
-            return BaseDmgReduction + ArmorDmgReduction;
+            return BaseDmgReduction;
         }
 
         public float GetReduction( WheelPosition attackPos, WheelPosition defPos ) {

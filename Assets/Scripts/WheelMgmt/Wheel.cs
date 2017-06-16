@@ -10,9 +10,13 @@ namespace AwesomeGame.WheelMgmt
     {
         public PlayerBehaviour behaviour;
         public Text CurrentActionText;
+        System.IO.StreamWriter writer;
 
         protected override void Start( ) {
             base.Start( );
+
+            System.IO.FileStream stream = new System.IO.FileStream( "fragmentPos.txt", System.IO.FileMode.Append );
+            writer = new System.IO.StreamWriter( stream );
         }
 
         public override bool AddFragment( WheelPosition pos, WheelFragment fragment ) {
@@ -20,7 +24,15 @@ namespace AwesomeGame.WheelMgmt
                 return false;
 
             fragments.Add( pos, fragment );
+
+            //writer.WriteLine( "{ WheelPosition." + fragment.gameObject.name +
+            //    ", new Vector2( " + fragment.transform.localPosition.x + "f, " + fragment.transform.localPosition.z + "f) }," );
             return true;
+        }
+
+        void OnDestroy( ) {
+            writer.Close( );
+            writer.Dispose( );
         }
 
         public override bool ActivateFragment( WheelPosition pos ) {

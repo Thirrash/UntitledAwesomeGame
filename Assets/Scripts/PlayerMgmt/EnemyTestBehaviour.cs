@@ -28,7 +28,7 @@ namespace AwesomeGame.PlayerMgmt
                 return;
 
             List<WheelPosition> rolledPos = new List<WheelPosition> {
-                WheelPosition.OuterRight, WheelPosition.OuterLeft
+                WheelPosition.OuterRight, WheelPosition.InnerRight
             };
 
             StartCoroutine( AttackAnim( ( ) => rolledPos ) );
@@ -41,7 +41,7 @@ namespace AwesomeGame.PlayerMgmt
                                           float staminaAttackModifier,
                                           EntityBehaviour attackerBeahviour) {
             List<WheelPosition> rolledPos = new List<WheelPosition> {
-                WheelPosition.OuterTop, WheelPosition.OuterBottom
+                WheelPosition.OuterTop, WheelPosition.InnerTop
             };
 
             StartCoroutine( AttackAnim( ( ) => rolledPos ) );

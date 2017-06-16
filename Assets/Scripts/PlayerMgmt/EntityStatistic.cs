@@ -85,11 +85,9 @@ namespace AwesomeGame.PlayerMgmt
                 Constants.GlobalMinimumStaminaDefenseModifier;
             StaminaHandler.CurrentStamina -= staminaToSpend;
 
-            float maxNonComboDamage = 0.0f;
-            float actualNonComboDamage = 0.0f;
             for( int i = 0; i < attackPosition.Count; i++ ) {
-                maxNonComboDamage += attack[i].GetBoost( );
-                actualNonComboDamage += Mathf.Clamp( attack[i].GetBoost( ) -
+                float maxNonComboDamage = attack[i].GetBoost( );
+                float actualNonComboDamage = Mathf.Clamp( attack[i].GetBoost( ) -
                     ( ( defensePosition.Count > i ) ?
                         DefenseStats[attackPosition[i]].GetReduction( attackPosition[i], defensePosition[i] ) :
                         DefenseStats[attackPosition[i]].GetReduction( ) ),
